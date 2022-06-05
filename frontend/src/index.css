@@ -1,3 +1,161 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background: #fafafa;
+}
+
+.bg-image {
+    background-image: url("./assets/Vector3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.swiper {
+    width: 240px;
+    height: 320px;
+}
+
+.swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    height: 100%;
+}
+
+@media (min-width: 1024px) {
+    .swiper {
+        width: 240px;
+        height: 320px;
+    }
+}
+@media (min-width: 1280px) {
+    .swiper {
+        width: 300px;
+        height: 380px;
+    }
+}
+
+@media (max-width: 400px) {
+    .swiper {
+        width: 180px;
+        height: 250px;
+    }
+}
+
+/* //img */
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.loadable {
+    overflow: hidden;
+    margin: 0 auto;
+}
+img {
+    display: block;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+body::-webkit-scrollbar {
+    width: 6px;
+    background-color: #fff;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #ff844b;
+    border-radius: 20px;
+}
+
+.btn1 {
+    border-radius: 75px;
+    background: #e3edf2;
+    width: 250px;
+    height: 250px;
+    transition: transform 0.4s ease;
+    margin: 1rem;
+}
+.overla {
+    border-radius: 75px;
+    width: 250px;
+    height: 250px;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    padding-top: 125px;
+    color: #e3edf2;
+    transition: opacity 0.25s;
+    backdrop-filter: blur(3px);
+}
+.overla > * {
+    transform: translateY(20px);
+    transition: transform 0.25s;
+}
+.overla:hover > * {
+    transform: translateY(0);
+}
+.overla:hover {
+    opacity: 1;
+}
+.btn1:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 0 0;
+}
+
+.btn-1 {
+    background-image: url("./assets/graduated.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+.btn-2 {
+    background-image: url("./assets/education.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+.btn-3 {
+    background-image: url("./assets/family.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+.btn-4 {
+    background-image: url("./assets/scholar.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+}
+p {
+    font-weight: bold;
+    font-family: "Quicksand", sans-serif;
+    font-stretch: wider;
+}
+
+div::-webkit-scrollbar {
+    width: 8px;
+}
+
+div::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: #fafafa;
+    border-radius: 8px;
+}
+
+/* hhigh */
