@@ -33,7 +33,7 @@ const DiffLogin = () => {
                                 className={`btn1 shadow-xl btn-${index + 1}`}
                                 key={ele}
                             >
-                                <div className="overla  uppercase">
+                                <div className="overla  uppercase para">
                                     <p>{ele}</p>
                                 </div>
                             </motion.button>

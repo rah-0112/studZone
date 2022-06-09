@@ -17,7 +17,7 @@ export default function Select() {
     const [selected, setSelected] = useState(semesters[0]);
 
     return (
-        <div className="w-full sm:w-72 md:w-64">
+        <div className="w-full sm:w-72 md:w-64 mt-10">
             <Listbox value={selected} onChange={setSelected}>
                 <div className="relative my-5">
                     <Listbox.Button className="w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">

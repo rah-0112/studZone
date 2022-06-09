@@ -50,19 +50,20 @@ const Details = () => {
             }
         });
     };
+
     return (
         <motion.div
-            className="bg-gradient-to-t from-slate-500 to-[#fafafa] h-[100vh] w-full"
+            className="bg-gradient-to-t from-slate-500 to-[#fafafa] w-full h-full duration-300"
             exit={{ opacity: 0 }}
         >
             <Disclosure as="nav">
-                {({ open }) => (
+                {({ open, close }) => (
                     <>
                         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                             <div className="relative flex items-center justify-between h-16">
                                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                     {/* Mobile menu button*/}
-                                    <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-500">
+                                    <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-500 ">
                                         <span className="sr-only">
                                             Open main menu
                                         </span>
@@ -184,39 +185,51 @@ const Details = () => {
                             </div>
                         </div>
 
-                        <Disclosure.Panel className="sm:hidden">
-                            <div className="px-2 pt-2 pb-3 space-y-1">
-                                {navigation.map((item, index) => (
-                                    <Disclosure.Button
-                                        as="a"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setOpenTab(index);
-                                        }}
-                                        data-toggle="tab"
-                                        role="tablist"
-                                        key={item.name}
-                                        href={item.href}
-                                        className={classNames(
-                                            item.current
-                                                ? "bg-slate-600 text-white"
-                                                : "text-slate-600 hover:bg-slate-600 hover:text-white",
-                                            "block px-3 py-2 rounded-md text-sm font-medium"
-                                        )}
-                                        aria-current={
-                                            item.current ? "page" : undefined
-                                        }
-                                    >
-                                        {item.name}
-                                    </Disclosure.Button>
-                                ))}
-                            </div>
-                        </Disclosure.Panel>
+                        <Transition
+                            enter="transition duration-100 ease-out"
+                            enterFrom="transform scale-95 opacity-0"
+                            enterTo="transform scale-100 opacity-100"
+                            leave="transition duration-75 ease-out"
+                            leaveFrom="transform scale-100 opacity-100"
+                            leaveTo="transform scale-95 opacity-0"
+                        >
+                            <Disclosure.Panel className="sm:hidden bg-slate-500 bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 rounded-b-2xl">
+                                <div className="px-2 pt-2 pb-3 space-y-1">
+                                    {navigation.map((item, index) => (
+                                        <Disclosure.Button
+                                            as="a"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setOpenTab(index);
+                                                close();
+                                            }}
+                                            data-toggle="tab"
+                                            role="tablist"
+                                            key={item.name}
+                                            href={item.href}
+                                            className={classNames(
+                                                item.current
+                                                    ? "bg-slate-600 text-white"
+                                                    : "text-slate-600 hover:bg-slate-600 hover:text-white",
+                                                "block px-3 py-2 rounded-md text-sm font-medium"
+                                            )}
+                                            aria-current={
+                                                item.current
+                                                    ? "page"
+                                                    : undefined
+                                            }
+                                        >
+                                            {item.name}
+                                        </Disclosure.Button>
+                                    ))}
+                                </div>
+                            </Disclosure.Panel>
+                        </Transition>
                     </>
                 )}
             </Disclosure>
             {openTab === -1 ? (
-                <div className="w-full grid place-items-center h-[60vh] pl-7 pr-7 md:pl-20 md:pr-20 lg:pl-32 lg:pr-32 mt-20 font-pop text-2xl font-bold tracking-wider leading-loose text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-900 text-center">
+                <div className="w-full grid place-items-center h-[91vh] pl-7 pr-7 mt-0.5 md:pl-20 md:pr-20 lg:pl-32 lg:pr-32  font-pop text-2xl font-bold tracking-wider leading-loose text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-900 text-center justify-center">
                     <div className="w-full md:w-2/3">
                         Fees should be paid before due date
                         <em className="px-1 text-[#d06838] font-serif text-4xl">
@@ -230,12 +243,12 @@ const Details = () => {
                     </div>
                 </div>
             ) : (
-                <div className="tab-content tab-space">
+                <div className="tab-content tab-space h-full">
                     {navigation.map((item, index) => (
                         <div
                             className={
                                 openTab === index
-                                    ? "block w-full h-full pl-7 pr-7 md:pl-20 md:pr-20 lg:pl-32 lg:pr-32 mt-20"
+                                    ? "block w-full pl-7 pr-7 md:pl-20 md:pr-20 lg:pl-32 lg:pr-32 h-full"
                                     : "hidden"
                             }
                             id={item.href}

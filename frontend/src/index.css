@@ -139,7 +139,7 @@ body::-webkit-scrollbar-thumb {
     background-repeat: no-repeat;
     background-size: 150px 150px;
 }
-p {
+.para {
     font-weight: bold;
     font-family: "Quicksand", sans-serif;
     font-stretch: wider;

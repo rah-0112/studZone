@@ -117,10 +117,10 @@ const Table = () => {
     ]);
 
     return (
-        <div className="flex flex-col max-w-7xl h-[60vh]">
+        <div className="flex flex-col max-w-7xl h-[68vh] ">
             <div className="overflow-x-auto">
                 <div>
-                    <div className="overflow-x-auto overflow-y-auto rounded-md">
+                    <div className="overflow-x-auto overflow-y-auto rounded-md ">
                         <Reorder.Group values={data} onReorder={setData}>
                             <table className="min-w-full leading-normal rounded-md">
                                 <thead className="bg-slate-500">
@@ -160,10 +160,10 @@ const Table = () => {
                                             as="tr"
                                             key={row.total}
                                             value={row.total}
-                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                                            class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100 font-bold"
                                         >
                                             <td className="px-5 py-5  border-gray-200 border-2 text-sm text-center">
-                                                <p className="text-gray-600 whitespace-no-wrap">
+                                                <p className="text-gray-600 whitespace-no-wrap uppercase">
                                                     {row.courseName}
                                                 </p>
                                             </td>

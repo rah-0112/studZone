@@ -4,8 +4,8 @@ import Select from "../components/Select";
 
 const Academics = () => {
     return (
-        <div className="flex lg:flex-row flex-col items-center lg:justify-start justify-center w-full h-full">
-            <div className="hidden flex-[0.2] mx-2 lg:flex">
+        <div className="flex lg:flex-row flex-col items-center lg:justify-start justify-center w-full h-[91vh] mt-0.5 ">
+            <div className="hidden flex-[0.2] mx-2 lg:flex ">
                 <div className="h-full w-full flex flex-col items-center">
                     {[
                         "done",
@@ -25,7 +25,7 @@ const Academics = () => {
                                     : "opacity-100"
                             }`}
                         >
-                            {`Sem ${index}`}
+                            {`Sem ${index + 1}`}
                         </button>
                     ))}
                 </div>
@@ -33,7 +33,7 @@ const Academics = () => {
             <div className="lg:hidden flex w-full ">
                 <Select />
             </div>
-            <div className="flex-1 lg:flex-[0.8] h-[60vh] w-full lg:w-[60vw]">
+            <div className="flex-1 lg:flex-[0.8] h-[68vh] w-full lg:w-[60vw]">
                 <Table />
             </div>
         </div>
