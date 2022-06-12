@@ -1,29 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "../components/Table";
 import Select from "../components/Select";
+import NoTable from "../components/NoTable";
 
 const Academics = () => {
+    const [sem, setSem] = useState([
+        {
+            sem: "1",
+            current: true,
+            table: <Table />,
+        },
+        {
+            sem: "2",
+            current: false,
+            table: <NoTable />,
+        },
+        {
+            sem: "3",
+            current: false,
+            table: <NoTable />,
+        },
+        {
+            sem: "4",
+            current: false,
+            table: <NoTable />,
+        },
+        {
+            sem: "5",
+            current: false,
+            table: <NoTable />,
+        },
+        {
+            sem: "6",
+            current: false,
+            table: <NoTable />,
+        },
+        {
+            sem: "7",
+            current: false,
+            table: <NoTable />,
+        },
+        {
+            sem: "8",
+            current: false,
+            table: <NoTable />,
+        },
+    ]);
+
+    const setOtherFalse = (index) => {
+        setSem((vals) =>
+            vals.map((val, idx) =>
+                idx === index
+                    ? { ...val, current: true }
+                    : { ...val, current: false }
+            )
+        );
+    };
+
     return (
-        <div className="flex lg:flex-row flex-col items-center lg:justify-start justify-center w-full h-[91vh] mt-0.5 ">
-            <div className="hidden flex-[0.2] mx-2 lg:flex ">
+        <div className="flex lg:flex-row flex-col items-center lg:justify-start justify-center w-full h-[91vh] mt-0.5">
+            <div className="hidden flex-[0.2] mx-2 lg:flex">
                 <div className="h-full w-full flex flex-col items-center">
-                    {[
-                        "done",
-                        "done",
-                        "done",
-                        "done",
-                        null,
-                        null,
-                        null,
-                        null,
-                    ].map((ele, index) => (
+                    {sem.map((ele, index) => (
                         <button
                             key={index}
-                            className={`w-24 bg-[#FF844B] font-bold text-white p-2 rounded-full m-3 hover:bg-[#ae603c] transition duration-300 ${
-                                ele === null
-                                    ? "opacity-25 cursor-not-allowed transition-none transform-none"
-                                    : "opacity-100"
+                            className={`w-24 font-bold p-2 rounded-full m-3   transition duration-300 ${
+                                ele.current
+                                    ? "bg-[#FF844B] text-slate-100"
+                                    : "text-slate-600"
                             }`}
+                            onClick={() => {
+                                setOtherFalse(index);
+                            }}
                         >
                             {`Sem ${index + 1}`}
                         </button>
@@ -34,7 +82,7 @@ const Academics = () => {
                 <Select />
             </div>
             <div className="flex-1 lg:flex-[0.8] h-[68vh] w-full lg:w-[60vw]">
-                <Table />
+                {sem.map((item, idx) => item.current && item.table)}
             </div>
         </div>
     );

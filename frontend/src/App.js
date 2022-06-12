@@ -6,6 +6,8 @@ import DiffLogin from './components/DiffLogin'
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from 'framer-motion';
 import MainPage from './components/MainPage';
+import StaffPage from './components/StaffPage';
+import MyDialog from './components/Dialog';
 
 const App = () => {
   const location = useLocation();
@@ -15,8 +17,10 @@ const App = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
-        <Route path="details" element={<Details />} />
+        <Route path="student" element={<Details />} />
         <Route path="diffLogin" element={<DiffLogin />} />
+        <Route path="staff" element={<StaffPage />} />
+        <Route path="dialog" element={<MyDialog />} />
       </Routes>
     </AnimatePresence>
 

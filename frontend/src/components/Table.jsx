@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { Reorder } from "framer-motion";
 
 const Table = () => {
@@ -117,7 +116,7 @@ const Table = () => {
     ]);
 
     return (
-        <div className="flex flex-col max-w-7xl h-[68vh] ">
+        <div className="flex flex-col max-w-7xl h-[68vh] bg-slate-100">
             <div className="overflow-x-auto">
                 <div>
                     <div className="overflow-x-auto overflow-y-auto rounded-md ">
