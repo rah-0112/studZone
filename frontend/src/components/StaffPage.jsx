@@ -10,6 +10,7 @@ import { ReactComponent as Logo } from "../assets/Studzone1.svg";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { BriefcaseIcon } from "@heroicons/react/solid";
+import { StudzoneState } from "../Context";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -44,12 +45,16 @@ const navigation = [
 
 const AdminPage = () => {
     const [openTab, setOpenTab] = React.useState(-1);
+    const { user, setUser } = StudzoneState();
     const setOtherFalse = (href) => {
         navigation.map((item) => {
             if (href !== item.href) {
                 item.current = false;
             }
         });
+    };
+    const signOut = () => {
+        setUser(null);
     };
     return (
         <>
@@ -181,6 +186,9 @@ const AdminPage = () => {
                                                                         : "",
                                                                     "block px-4 py-2 text-sm text-gray-700"
                                                                 )}
+                                                                onClick={
+                                                                    signOut
+                                                                }
                                                             >
                                                                 Sign out
                                                             </Link>

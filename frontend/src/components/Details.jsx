@@ -9,6 +9,7 @@ import Academics from "../sections/Academics";
 import Achievements from "../sections/Achievements";
 import Arrear from "../sections/Arrear";
 import Fee from "../sections/Fee";
+import { StudzoneState } from "../Context";
 
 const navigation = [
     {
@@ -43,12 +44,17 @@ function classNames(...classes) {
 
 const Details = () => {
     const [openTab, setOpenTab] = React.useState(-1);
+    const { user, setUser } = StudzoneState();
     const setOtherFalse = (href) => {
         navigation.map((item) => {
             if (href !== item.href) {
                 item.current = false;
             }
         });
+    };
+
+    const signOut = () => {
+        setUser(null);
     };
 
     return (
@@ -173,6 +179,7 @@ const Details = () => {
                                                                     : "",
                                                                 "block px-4 py-2 text-sm text-gray-700"
                                                             )}
+                                                            onClick={signOut}
                                                         >
                                                             Sign out
                                                         </Link>

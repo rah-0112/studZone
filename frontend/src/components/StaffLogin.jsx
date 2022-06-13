@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ReactComponent as Background } from "../assets/LoginBG.svg";
 import LBg from "../assets/loginleft.png";
 import Line from "../assets/Line.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import axios from "axios";
@@ -34,7 +34,7 @@ const item = {
 
 const Login = () => {
     const navigate = useNavigate();
-    const [rollno, setRollno] = useState("");
+    const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const [errorRno, setErrorRno] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
@@ -44,23 +44,20 @@ const Login = () => {
         setErrorPass(false);
         setErrorRno(false);
         e.preventDefault();
-        if (
-            rollno.match("^[0-9]{2}[A-Z||a-z][0-9]{3}$") ||
-            rollno.match("^[0-9]{2}[A-Z||a-z]{2}[0-9]{2}$")
-        ) {
-            if (password.match("[0-9A-Z-]{10}")) {
+        if (userId.match("[0-9A-Z]{5}")) {
+            if (password.match("[A-Z0-9-]{10}")) {
                 const { data } = await axios.post(
-                    "http://localhost:5000/student/login",
-                    { rollno, password }
+                    "http://localhost:5000/staff/login",
+                    { userId, password }
                 );
                 if (data === "1") {
-                    console.log("student");
-                    navigate("/profile", { replace: true });
-                    setUser({ id: rollno });
+                    console.log("staff");
+                    setUser({ id: userId });
+                    navigate("/staff", { replace: true });
                 } else {
-                    navigate("/login", { replace: true });
+                    navigate("/stafflogin", { replace: true });
                 }
-                setRollno("");
+                setUserId("");
                 setPassword("");
             } else {
                 setErrorPass(true);
@@ -112,10 +109,10 @@ const Login = () => {
                         <motion.div className="lg:w-[25vw]" variants={item}>
                             <div>
                                 <div className="font-bold mb-4 grid grid-cols-2">
-                                    <div>Rollno</div>
+                                    <div>User Id</div>
                                     {errorRno && (
                                         <span className="text-red-500 font-medium right-2 top-[3.8rem] text-right ">
-                                            Invalid Rollno
+                                            Invalid User Id
                                         </span>
                                     )}
                                 </div>
@@ -126,8 +123,8 @@ const Login = () => {
                                     className={`outline outline-[#b5b5b5] focus:outline-[#FF844B] font-medium w-full mb-6 rounded-xl bg-gray-50 p-2 focus:ring-[#FF844B] ring-2 ${
                                         errorRno && "outline-[#f11818]"
                                     } `}
-                                    value={rollno}
-                                    onChange={(e) => setRollno(e.target.value)}
+                                    value={userId}
+                                    onChange={(e) => setUserId(e.target.value)}
                                 />
                             </div>
                             <div>

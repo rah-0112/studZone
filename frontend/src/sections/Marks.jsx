@@ -33,35 +33,17 @@ const Marks = () => {
         setStudents(data);
     };
 
-    // const fetchMarks = async () => {
-    //     const { data } = await axios.post(
-    //         "http://localhost:5000/staff/fetchMarks",
-    //         {
-    //             id: user.id,
-    //             paper_name: currentCourse,
-    //             stu_id: currentStudent.id,
-    //             sem_no: 1,
-    //         }
-    //     );
-    //     setForm({
-    //         ...data,
-    //         ap: data.assignment,
-    //         tut: data.tutorial,
-    //         sem: data.semester,
-    //     });
-    // };
-
     const uploadMarks = async () => {
         await axios.post("http://localhost:5000/staff/uploadMarks", {
-            ca1: form.ca1,
-            ca2: form.ca2,
-            ca3: form.ca3,
-            assignment: form.assignment,
-            tutorial: form.tutorial,
-            sem_mark: form.sem,
-            sem_no: 5,
-            staff_id: user.id,
-            stu_id: currentStudent.id,
+            // ca1: ca1,
+            // ca2: ca2,
+            // ca3: ca3,
+            // assignment: assignment,
+            // tutorial: tutorial,
+            // sem_mark: sem,
+            // sem_no: 5,
+            // staff_id: user.id,
+            // stu_id: currentStudent.id,
         });
         console.log("Updated");
     };

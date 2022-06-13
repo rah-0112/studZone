@@ -3,7 +3,7 @@ const Studzone = createContext();
 
 const StudzoneContext = ({ children }) => {
     const [ user, setUser ] = useState({
-        id: 'SI204'
+        id: null
     });
     return (
         <Studzone.Provider

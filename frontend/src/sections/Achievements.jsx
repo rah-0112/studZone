@@ -1,82 +1,46 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import NoReccords from "../components/NoReccords";
 import { PlusCircleIcon } from "@heroicons/react/solid";
 import { PencilIcon } from "@heroicons/react/solid";
 import { DownloadIcon } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-
-const data = [
-    {
-        name: "Coluber constrictor",
-        date: "10/7/2021",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Vestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.",
-    },
-    {
-        name: "Eolophus roseicapillus",
-        date: "5/6/2022",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.",
-    },
-    {
-        name: "Acridotheres tristis",
-        date: "1/28/2022",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.",
-    },
-    {
-        name: "Anastomus oscitans",
-        date: "10/7/2021",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.",
-    },
-    {
-        name: "Coluber constrictor",
-        date: "10/7/2021",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Vestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.",
-    },
-    {
-        name: "Eolophus roseicapillus",
-        date: "5/6/2022",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Curabitur in libero ut massa volutpat convallis. Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.",
-    },
-    {
-        name: "Acridotheres tristis",
-        date: "1/28/2022",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.",
-    },
-    {
-        name: "Anastomus oscitans",
-        date: "10/7/2021",
-        document: "Certificate1.pdf",
-        link: "https://rahul.com",
-        description:
-            "Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.",
-    },
-];
+import axios from "axios";
 
 const Achievements = () => {
     let [isOpen, setIsOpen] = useState(false);
     const [file, setFile] = useState(null);
     const [name, setName] = useState(null);
+    const [isEdit, setIsEdit] = useState(false);
+    const [ach_id, setAch_id] = useState("");
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fn = async () => {
+            var record = await axios.post(
+                "http://localhost:5000/student/achievements",
+                {
+                    rollno: "19Z205",
+                    //   sem_no: sem_no,
+                }
+            );
+            console.log(record);
+            record = record.data.data.rows;
+            setData([]);
+            record.map((eachpaper) => {
+                var rec = {
+                    name: eachpaper.name,
+                    date: eachpaper.date,
+                    document: "Certificate1.pdf",
+                    link: eachpaper.img_link,
+                    ach_id: eachpaper.ach_id,
+                };
+                setData((data) => [...data, rec]);
+            });
+        };
+        fn();
+    }, [isOpen]);
 
     const [q, setQ] = useState("");
     const [searchParam] = useState(["document", "name"]);
@@ -104,24 +68,53 @@ const Achievements = () => {
     }
 
     const handleCreate = async () => {
-        // const data = new FormData();
-        // data.append("file", file);
-        // data.append("upload_preset", "uploads");
-        // try {
-        //     const uploadRes = await axios.post(
-        //         "https://api.cloudinary.com/v1_1/da2gjv9jw/image/upload",
-        //         data
-        //     );
-        //     const { url } = uploadRes.data;
-        //     const newAchievement = {
-        //              name
-        //         img: url,
-        //     };
-        //     await axios.post("http://localhost:3000/api/products", newAchievement);
-        //     setIsOpen(false);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        console.log("hit");
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", "uploads");
+        try {
+            const uploadRes = await axios.post(
+                "https://api.cloudinary.com/v1_1/da2gjv9jw/image/upload",
+                data
+            );
+            const { url } = uploadRes.data;
+            const newAchievement = {
+                name,
+                img: url,
+            };
+            if (!isEdit) {
+                await axios.post(
+                    "http://localhost:5000/student/addachievements",
+                    {
+                        rollno: "19Z205",
+                        name: newAchievement.name,
+                        img_link: newAchievement.img,
+                        sem_no: 5,
+                        date: new Date()
+                            .toJSON()
+                            .slice(0, 10)
+                            .replace(/-/g, "/"),
+                    }
+                );
+                setIsOpen(false);
+            } else {
+                await axios.post(
+                    "http://localhost:5000/student/updateachievements",
+                    {
+                        rollno: "19Z205",
+                        name: newAchievement.name,
+                        img_link: newAchievement.img,
+                        sem_no: 5,
+                        ach_id: ach_id,
+                        //   date: new Date().toJSON().slice(0, 10).replace(/-/g, "/"),
+                    }
+                );
+                setIsEdit(false);
+                setIsOpen(false);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -173,6 +166,7 @@ const Achievements = () => {
                                                         className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border-2 border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                                         id="name"
                                                         placeholder="Name of achievement"
+                                                        value={name}
                                                         onChange={(e) =>
                                                             setName(
                                                                 e.target.value
@@ -291,7 +285,9 @@ const Achievements = () => {
                                         {item.name}
                                     </div>
                                     <div className="font-bold text-slate-600 px-3 flex-[0.2]">
-                                        {item.date}
+                                        {item.date
+                                            .slice(0, 10)
+                                            .replace(/-/g, "/")}
                                     </div>
                                     <a
                                         className="font-bold text-slate-600 px-3 flex-[0.2] underline cursor-pointer"
@@ -304,7 +300,16 @@ const Achievements = () => {
                                     <div className="flex flex-row gap-10 sm:gap-5 ">
                                         <div className="rounded-full flex items-center justify-center duration-300 text-slate-500 flex-[0.1]">
                                             <button>
-                                                <PencilIcon className="h-6 w-6 hover:text-slate-700" />
+                                                <PencilIcon
+                                                    className="h-6 w-6 hover:text-slate-700"
+                                                    onClick={(e) => {
+                                                        setName(item.name);
+                                                        // setQ(item.name);
+                                                        setAch_id(item.ach_id);
+                                                        setIsEdit(true);
+                                                        openModal();
+                                                    }}
+                                                />
                                             </button>
                                         </div>
                                         <button className="rounded-full flex items-center justify-center duration-300 p-1 text-slate-500 flex-[0.1] hover:text-slate-700">

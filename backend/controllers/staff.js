@@ -29,6 +29,7 @@ const fetchCourses = async (req, res) => {
         res.status(500).send({ message: "Something went wrong." });
     }
 }
+
 const fetchStudentsPerCourse = async (req, res) => {
     const { id, paper_name } = req.body;
     try {
@@ -43,6 +44,7 @@ const fetchStudentsPerCourse = async (req, res) => {
         res.status(500).send({ message: "Something went wrong." });
     }
 }
+
 const uploadMarks = async (req, res) => {
     console.log(req.body);
     const { staff_id, paper_name, stu_id, ca1, ca2, ca3, assignment, tutorial, sem_mark, sem_no } = req.body;
@@ -59,6 +61,7 @@ const uploadMarks = async (req, res) => {
         res.status(500).send({ message: "Something went wrong." });
     }
 }
+
 const fetchMarks = async (req, res) => {
     console.log(req.body);
     const { staff_id, paper_name, stu_id, sem_no } = req.body;

@@ -1,8 +1,29 @@
-const express = require('express');
-const login = require('../controllers/student.js');
+const db = require("../db");
+const {
+  profile,
+  academics,
+  arrear,
+  fee,
+  achievements,
+  addachievements,
+  updateachievements,
+} = require("../controllers/student");
 
-const router = express.Router();
+const express = require("express");
+const StudentRoute = express.Router();
 
-router.post('/login', login);
+StudentRoute.post("/profile", profile);
 
-module.exports = router;
+StudentRoute.post("/academics", academics);
+
+StudentRoute.post("/arrear", arrear); // check
+
+StudentRoute.post("/fee", fee);
+
+StudentRoute.post("/achievements", achievements);
+
+StudentRoute.post("/addachievements", addachievements);
+
+StudentRoute.post("/updateachievements", updateachievements);
+
+module.exports = StudentRoute;

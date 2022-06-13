@@ -25,21 +25,48 @@ const DiffLogin = () => {
                 animate="visible"
                 variants={list}
             >
-                {["Student", "Teacher", "Parent", "Alumni"].map(
-                    (ele, index) => (
-                        <Link to="/login">
-                            <motion.button
-                                variants={item}
-                                className={`btn1 shadow-xl btn-${index + 1}`}
-                                key={ele}
-                            >
-                                <div className="overla  uppercase para">
-                                    <p>{ele}</p>
-                                </div>
-                            </motion.button>
-                        </Link>
-                    )
-                )}
+                {/* {["Student", "Teacher", "Parent", "Alumni"] */}
+
+                <Link to="/login">
+                    <motion.button
+                        variants={item}
+                        className={`btn1 shadow-xl btn-1`}
+                    >
+                        <div className="overla uppercase para">
+                            <p>Student</p>
+                        </div>
+                    </motion.button>
+                </Link>
+                <Link to="/staffLogin">
+                    <motion.button
+                        variants={item}
+                        className={`btn1 shadow-xl btn-2`}
+                    >
+                        <div className="overla uppercase para">
+                            <p>Staff</p>
+                        </div>
+                    </motion.button>
+                </Link>
+                <Link to="/login">
+                    <motion.button
+                        variants={item}
+                        className={`btn1 shadow-xl btn-3`}
+                    >
+                        <div className="overla uppercase para">
+                            <p>Parent</p>
+                        </div>
+                    </motion.button>
+                </Link>
+                <Link to="/login">
+                    <motion.button
+                        variants={item}
+                        className={`btn1 shadow-xl btn-4`}
+                    >
+                        <div className="overla uppercase para">
+                            <p>Alumni</p>
+                        </div>
+                    </motion.button>
+                </Link>
             </motion.div>
         </>
     );

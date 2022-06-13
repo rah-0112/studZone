@@ -7,7 +7,7 @@ import LoginNav from "./LoginNav";
 
 const Profile = () => {
     return (
-        <div className="">
+        <motion.div className="" exit={{ opacity: 0 }}>
             <LoginNav profile={"hello"} />
             <div className="absolute mt-16">
                 <div className="grid grid-cols-1 place-items-center w-[100vw] h-[80vh] rounded-lg">
@@ -45,7 +45,7 @@ const Profile = () => {
                     </Link>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
