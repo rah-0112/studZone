@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 const MainPage = () => {
     return (
-        <motion.div exit={{ y: -1000 }}>
+        <motion.div exit={{ opacity: 0 }}>
             <Home />
             <Updates />
             <Contact />

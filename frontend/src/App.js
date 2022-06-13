@@ -20,7 +20,6 @@ const App = () => {
         <Route path="student" element={<Details />} />
         <Route path="diffLogin" element={<DiffLogin />} />
         <Route path="staff" element={<StaffPage />} />
-        <Route path="dialog" element={<MyDialog />} />
       </Routes>
     </AnimatePresence>
 

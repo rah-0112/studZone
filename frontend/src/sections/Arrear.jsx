@@ -22,7 +22,7 @@ const Arrear = () => {
                         <div className="flex flex-col bg-white sm:flex-row p-5 m-5 gap-3 items-center rounded-xl bg-opacity-90 backdrop-filter backdrop-blur-lg h-fit sm:h-48">
                             {item.cleared ? (
                                 <div className="flex flex-col items-center">
-                                    <CheckCircleIcon className="h-28 text-green-600 text-opacity-70" />
+                                    <CheckCircleIcon className="h-20 text-green-600 text-opacity-70" />
                                     <div class="px-5 py-3 text-sm">
                                         <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                             <span
@@ -37,7 +37,7 @@ const Arrear = () => {
                                 </div>
                             ) : (
                                 <div className="flex flex-col items-center">
-                                    <XCircleIcon className="h-28 text-red-600 text-opacity-85" />
+                                    <XCircleIcon className="h-20 text-red-600 text-opacity-85" />
                                     <div class="px-5 py-3 text-sm">
                                         <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                                             <span
