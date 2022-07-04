@@ -9,7 +9,7 @@ const profile = async (req, res, next) => {
     //console.log(processingQuery);
     const data = await db.query(processingQuery);
     // //console.log(data);
-    res.send({ hit: "true", data: data });
+    res.send({ hit: "true", data: data.rows });
   } catch (e) {
     res.send({ error: e });
   }
@@ -48,7 +48,7 @@ const fee = async (req, res, next) => {
     const processingQuery = `select * from academics natural join student natural join fee where id=\'${rollno}\'`;
     const data = await db.query(processingQuery);
     // //console.log(data);
-    res.send({ hit: "true", data: data });
+    res.send({ hit: "true", data: data.rows });
   } catch (e) {
     res.send({ error: e });
   }
@@ -63,7 +63,7 @@ const achievements = async (req, res, next) => {
     // //console.log(processingQuery);
     const data = await db.query(processingQuery);
     // //console.log(data);
-    res.send({ hit: "true", data: data });
+    res.send({ hit: "true", data: data.rows });
   } catch (e) {
     res.send({ error: e });
   }
@@ -78,9 +78,9 @@ const addachievements = async (req, res, next) => {
     var processingQuery = `select * from student natural join academics where id=\'${rollno}\'`;
     // console.log(processingQuery);
     var data = await db.query(processingQuery);
-    //console.log(data.rows);
+    console.log(data.rows);
 
-    processingQuery = `insert into achievements(name, id,date, sem_no, d_id, img_link) values(\'${name}\',\'${rollno}\',\'${req.body.date}\',${req.body.sem_no}, \'${data.rows[ 0 ].d_id}\', \'${req.body.img_link}\') `;
+    var processingQuery = `insert into achievements(name, id,date, d_id, img_link) values(\'${name}\',\'${rollno}\',\'${req.body.date}\', \'${data.rows[ 0 ].d_id}\', \'${req.body.img_link}\') `;
     // console.log(processingQuery);
 
     await db.query(processingQuery);
@@ -95,6 +95,7 @@ const addachievements = async (req, res, next) => {
     res.send({ error: e });
   }
 };
+
 const updateachievements = async (req, res, next) => {
   const rollno = req.body.rollno;
   const img_link = req.body.img_link;

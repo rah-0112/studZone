@@ -20,7 +20,7 @@ const fetchCourses = async (req, res) => {
     try {
         const check = await db.query(`select * from staff where id = '${id}'`);
         if (check.rowCount !== 0) {
-            const result = await db.query(`select paper_name from staff natural join paper_detail where id = '${id}'`);
+            const result = await db.query(`select * from staff natural join paper_detail where id = '${id}'`);
             res.status(200).send(result.rows);
         } else {
             res.status(400).send({ message: "No such staff found." })
@@ -46,16 +46,16 @@ const fetchStudentsPerCourse = async (req, res) => {
 }
 
 const uploadMarks = async (req, res) => {
-    console.log(req.body);
-    const { staff_id, paper_name, stu_id, ca1, ca2, ca3, assignment, tutorial, sem_mark, sem_no } = req.body;
+    //console.log(req.body);
+    const { staff_id, paper_name, stu_id, ca1, ca2, ca3, ap, tut, sem, sem_no } = req.body;
     try {
         const check = await db.query(`select * from student where id = '${stu_id}'`);
         if (check.rowCount !== 0) {
-            const query = `update s_paper set ca1 = ${ca1}, ca2 = ${ca2}, ca3 = ${ca3}, assignment = ${assignment}, tutorial = ${tutorial}, sem_mark = ${sem_mark} where sem_no = ${sem_no} and paper_name = '${paper_name}' and id = '${stu_id}' and stf_id = '${staff_id}' returning *;`
+            const query = `update s_paper set ca1 = ${ca1}, ca2 = ${ca2}, ca3 = ${ca3}, assignment = ${ap}, tutorial = ${tut}, sem_mark = ${sem} where sem_no = ${sem_no} and paper_name = '${paper_name}' and id = '${stu_id}' and stf_id = '${staff_id}' returning *;`
             const result = await db.query(query);
             res.status(200).send(result.rows[ 0 ]);
         } else {
-            res.status(400).send({ message: "No such student found." })
+            res.status(400).send({ message: "No such student found." });
         }
     } catch (err) {
         res.status(500).send({ message: "Something went wrong." });
@@ -68,11 +68,11 @@ const fetchMarks = async (req, res) => {
     try {
         const check = await db.query(`select * from staff where id = '${staff_id}';`);
         if (check.rowCount !== 0) {
-            const query = `select ca1, ca2, ca3, assignment, tutorial, sem_mark from s_paper where sem_no = ${sem_no} and paper_name = '${paper_name}' and id = '${stu_id}' and stf_id = '${staff_id}'`;
+            const query = `select ca1, ca2, ca3, assignment as ap, tutorial as tut, sem_mark as sem from s_paper where sem_no = ${sem_no} and paper_name = '${paper_name}' and id = '${stu_id}' and stf_id = '${staff_id}'`;
             const result = await db.query(query)
-            res.status(200).send(result.rows);
+            res.status(200).send(result.rows[ 0 ]);
         } else {
-            res.status(400).send({ message: "No such student found." })
+            res.status(400).send({ message: "No such student found." });
         }
     } catch (err) {
         res.status(500).send({ message: "Something went wrong." });
@@ -99,7 +99,7 @@ const fetchArrear = async (req, res) => {
     try {
         const check = await db.query(`select * from staff where id = '${id}'`);
         if (check.rowCount !== 0) {
-            const result = await db.query(`select per.name, sp.id, sp.paper_name from staff natural join paper_detail p inner join s_paper sp on p.sem_no = sp.sem_no and p.d_id = sp.d_id and p.paper_name = sp.paper_name inner join arrear_sem a on a.id = sp.id and a.sem_no = sp.sem_no and a.d_id = sp.d_id and a.paper_name = sp.paper_name inner join student s on s.id = sp.id inner join person per on s.id = per.id where sp.stf_id = '${id}';`)
+            const result = await db.query(`select * from staff natural join paper_detail p inner join s_paper sp on p.sem_no = sp.sem_no and p.d_id = sp.d_id and p.paper_name = sp.paper_name inner join arrear_sem a on a.id = sp.id and a.sem_no = sp.sem_no and a.d_id = sp.d_id and a.paper_name = sp.paper_name inner join student s on s.id = sp.id inner join person per on s.id = per.id where sp.stf_id = '${id}';`)
             res.status(200).send(result.rows);
         } else {
             res.status(400).send({ message: "No such staff found." })

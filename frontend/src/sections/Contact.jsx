@@ -73,13 +73,13 @@ const Contact = () => {
             setMessage.length > 0
         ) {
             setSumbit(true);
-            await axios.post("", {
-                Name: setName,
-                Email: setEmail,
-                PhoneNumber: setPhoneno,
-                ReplyType: setReplyType,
-                Message: setMessage,
-            });
+            // await axios.post("", {
+            //     Name: setName,
+            //     Email: setEmail,
+            //     PhoneNumber: setPhoneno,
+            //     ReplyType: setReplyType,
+            //     Message: setMessage,
+            // });
             setNameHandler("");
             setEmailHandler("");
             setPhonenoHandler("");
@@ -89,7 +89,7 @@ const Contact = () => {
     };
 
     const list = {
-        show: { opacity: 1, transition: { staggerChildren: 0.3 } },
+        show: { opacity: 1, transition: { staggerChildren: 0.2 } },
         hidden: { opacity: 0 },
     };
     const item = {
@@ -207,7 +207,7 @@ const Contact = () => {
                         </svg>
                     </div>
                 </motion.div>
-                <div class="flex ">
+                <div class="flex">
                     <motion.div
                         class="w-full xl:max-w-xl md:max-w-md lg:max-w-lg rounded-3xl shadow-lg flex flex-col md:px-14 px-8 py-8 bg-[#fafafa]"
                         variants={list}
@@ -339,18 +339,19 @@ const Contact = () => {
                                 </div>
                                 <div className="flex items-center flex-row justify-center">
                                     <input
+                                        id="emailRadio"
                                         type="radio"
                                         class="form-radio"
                                         name="accountType"
                                         value="business"
-                                        ref={typeRef}
+                                        ref={type1Ref}
                                         onChange={() =>
                                             setReplyTypeHandler(
-                                                typeRef.current.value
+                                                type1Ref.current.value
                                             )
                                         }
                                     />
-                                    <label class="ml-2" htmlFor="buisness">
+                                    <label class="ml-2" htmlFor="emailRadio">
                                         Email
                                     </label>
                                 </div>
@@ -363,7 +364,7 @@ const Contact = () => {
                                     isMessage ? "text-red-500" : "black"
                                 } font-semibold`}
                             >
-                                Messages or Hobbies
+                                Message
                             </label>
                             <TextareaAutosize
                                 id="Messages"
@@ -373,7 +374,7 @@ const Contact = () => {
                                 }}
                                 minRows={3}
                                 value={setMessage}
-                                placeholder="Your Messages and hobbies"
+                                placeholder="Your message"
                                 maxRows={12}
                                 className={`bg-transparent relative font-medium outline-none focus:outline-none duration-300 focus-within:ring-[#FF844B] resize-none w-full mb-5 mt-3 rounded-2xl bg-gray-50 p-3 ring-2 ${
                                     isMessage
@@ -389,10 +390,11 @@ const Contact = () => {
                             )}
                         </motion.div>
                         <motion.button
-                            className="bg-[#FF844B] font-bold text-white p-2 rounded-full w-full"
+                            className="bg-[#FF844B] font-bold text-white p-2 rounded-full w-full hover:bg-[#df703d]"
                             variants={item}
+                            onClick={submitHandler}
                         >
-                            Send
+                            {sumbit ? "Sending..." : "Send"}
                         </motion.button>
                     </motion.div>
                 </div>

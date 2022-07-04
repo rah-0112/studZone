@@ -96,7 +96,7 @@ const Updates = () => {
                     </Swiper>
                 </motion.div>
                 <motion.div className="flex">
-                    <div className="w-full xl:max-w-xl md:max-w-md lg:max-w-lg rounded shadow-lg hover:bg-slate-500  duration-500  text-gray-700 hover:text-white">
+                    <div className="w-full xl:max-w-xl md:max-w-md lg:max-w-lg rounded shadow-lg hover:shadow-2xl  duration-500  text-gray-700">
                         <div className="px-6 py-4 flex flex-col gap-5">
                             <p className="sm:indent-16 indent-10  text-base">
                                 <span className=" text-6xl font-bold ">T</span>

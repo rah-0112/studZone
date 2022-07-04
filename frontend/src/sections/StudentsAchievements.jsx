@@ -16,6 +16,7 @@ const StudentsAchievements = () => {
                 id: user.id,
             }
         );
+        console.log(data);
         setStudents(data);
     };
 
@@ -109,14 +110,16 @@ const StudentsAchievements = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    {`${item.img_link}`.substring(80, 94)}
+                                    {`Certificate-${index + 1}.pdf`}
                                 </a>
                             </div>
                         ))}
                     </div>
                 </div>
             ) : (
-                <NoReccords heading="Achievements" />
+                <div className="py-10">
+                    <NoReccords heading="Achievements" />
+                </div>
             )}
         </div>
     );

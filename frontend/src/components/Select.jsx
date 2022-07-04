@@ -1,20 +1,24 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 
 const semesters = [
-    { name: "Semester 1" },
-    { name: "Semester 2" },
-    { name: "Semester 3" },
-    { name: "Semester 4" },
-    { name: "Semester 5" },
-    { name: "Semester 6" },
-    { name: "Semester 7" },
-    { name: "Semester 8" },
+    { name: "Semester 1", index: 0 },
+    { name: "Semester 2", index: 1 },
+    { name: "Semester 3", index: 2 },
+    { name: "Semester 4", index: 3 },
+    { name: "Semester 5", index: 4 },
+    { name: "Semester 6", index: 5 },
+    { name: "Semester 7", index: 6 },
+    { name: "Semester 8", index: 7 },
 ];
 
-export default function Select() {
+export default function Select({ setOtherFalse }) {
     const [selected, setSelected] = useState(semesters[0]);
+
+    useEffect(() => {
+        setOtherFalse(selected.index);
+    }, [selected]);
 
     return (
         <div className="w-full sm:w-72 md:w-64 mt-10">

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Select from "../components/Select";
 import { AcademicCapIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
@@ -10,17 +9,16 @@ const Marks = () => {
     let [isOpen, setIsOpen] = useState(false);
     const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
-    const [currentCourse, setCurrentCourse] = useState();
-    const [currentStudent, setCurrentStudent] = useState();
+    const [currentCourse, setCurrentCourse] = useState({});
+    const [currentStudent, setCurrentStudent] = useState({});
     const { user } = StudzoneState();
 
     const fetchCourses = async () => {
-        const { data } = await axios.post(
-            "http://localhost:5000/staff/courses",
-            { id: user.id }
-        );
-        data.map((val, index) =>
-            index === 1 ? { ...val, current: true } : { ...val, current: false }
+        var { data } = await axios.post("http://localhost:5000/staff/courses", {
+            id: user.id,
+        });
+        data = data.map((val, index) =>
+            index ? { ...val, index: index } : { ...val, index: index }
         );
         setCourses(data);
     };
@@ -35,17 +33,26 @@ const Marks = () => {
 
     const uploadMarks = async () => {
         await axios.post("http://localhost:5000/staff/uploadMarks", {
-            // ca1: ca1,
-            // ca2: ca2,
-            // ca3: ca3,
-            // assignment: assignment,
-            // tutorial: tutorial,
-            // sem_mark: sem,
-            // sem_no: 5,
-            // staff_id: user.id,
-            // stu_id: currentStudent.id,
+            ...form,
+            sem_no: 4,
+            staff_id: user.id,
+            stu_id: currentStudent.id,
+            paper_name: currentCourse,
         });
-        console.log("Updated");
+        closeModal();
+    };
+
+    const fetchMarks = async () => {
+        const { data } = await axios.post(
+            "http://localhost:5000/staff/fetchMarks",
+            {
+                staff_id: user.id,
+                stu_id: currentStudent.id,
+                paper_name: currentCourse,
+                sem_no: 4,
+            }
+        );
+        setForm(data);
     };
 
     useEffect(() => {
@@ -60,12 +67,21 @@ const Marks = () => {
         ap: 0,
         sem: 0,
     });
+
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     function closeModal() {
         setIsOpen(false);
+        setForm({
+            ca1: 0,
+            ca2: 0,
+            ca3: 0,
+            tut: 0,
+            ap: 0,
+            sem: 0,
+        });
     }
     function openModal() {
         setIsOpen(true);
@@ -87,12 +103,6 @@ const Marks = () => {
     useEffect(() => {
         fetchStudentsPerCourse();
     }, [currentCourse]);
-
-    // useEffect(() => {
-    //     if (isOpen) {
-    //         fetchMarks();
-    //     }
-    // }, [isOpen]);
 
     return (
         <>
@@ -259,55 +269,60 @@ const Marks = () => {
                     </div>
                 </Dialog>
             </Transition>
-
-            <div className="flex lg:flex-row flex-col items-center lg:justify-start justify-center w-full h-[91vh] mt-0.5">
-                <div className="hidden flex-[0.2] mx-2 lg:flex px-2 ">
-                    <div
-                        className={`w-full flex flex-col items-center bg-white rounded-xl bg-opacity-30 backdrop-filter backdrop-blur-lg px-2 h-[68vh] overflow-y-auto ${
-                            courses.length > 6
-                                ? "justify-start"
-                                : "justify-evenly"
-                        }`}
-                    >
-                        {courses.map((ele, index) => (
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setCurrentCourse(ele);
-                                    setOtherFalse(index);
-                                }}
+            <div className="flex  flex-col items-center lg:justify-start justify-center w-full lg:h-[91vh] h-full mt-0.5 pt-20 gap-10 lg:gap-0 lg:pt-0 ">
+                <div
+                    className="py-10 font-bold text-slate-500 underline
+                "
+                >
+                    {"CURRENT SEMESTER : 4"}
+                </div>
+                <div className="flex-col flex lg:flex-row">
+                    <div className="w-full flex-[0.2] mx-2 lg:flex px-2 ">
+                        <div
+                            className={`w-full  flex flex-col items-center bg-slate-100 rounded-xl lg:bg-opacity-30 backdrop-filter backdrop-blur-lg px-2 lg:h-[68vh] overflow-y-auto ${
+                                courses.length > 6
+                                    ? "justify-start"
+                                    : "justify-evenly"
+                            }`}
+                        >
+                            {courses.map((ele, index) => (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setCurrentCourse(ele);
+                                        setOtherFalse(index);
+                                    }}
+                                    key={index}
+                                    className={`w-3/4 font-bold h-fit p-2 m-3 transition duration-300 rounded-lg ${
+                                        ele.current
+                                            ? " bg-slate-500 text-white"
+                                            : " text-slate-500 bg-slate-100 bg-opacity-70"
+                                    }`}
+                                >
+                                    {ele.paper_name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex-1 lg:flex-[0.8] h-[68vh] w-full flex flex-wrap flex-row justify-evenly items-center overflow-y-auto">
+                        {students.map((item, index) => (
+                            <div
+                                className="w-48 h-1/3 m-3 shadow-lg rounded-lg bg-slate-100 flex flex-col gap-2 justify-evenly items-center hover:bg-slate-200 cursor-pointer"
                                 key={index}
-                                className={`w-3/4 font-bold p-2 m-3 transition duration-300 rounded-lg ${
-                                    ele.current
-                                        ? " bg-slate-500 text-white"
-                                        : " text-slate-500"
-                                }`}
+                                onClick={() => {
+                                    openModal();
+                                    fetchMarks();
+                                    setCurrentStudent(item);
+                                }}
                             >
-                                {ele.paper_name}
-                            </button>
+                                <div className="font-bold text-slate-600 px-3 flex-[0.4] text-center text-lg flex flex-col gap-2 items-center">
+                                    <AcademicCapIcon className="h-14 w-14 text-[#FF844B]" />
+                                    <div>{item.name}</div>
+                                    <div>{item.id}</div>
+                                </div>
+                            </div>
                         ))}
                     </div>
-                </div>
-                <div className="lg:hidden flex w-full ">
-                    <Select />
-                </div>
-                <div className="flex-1 lg:flex-[0.8] h-[68vh] w-full flex flex-wrap flex-row justify-evenly items-center overflow-y-auto">
-                    {students.map((item, index) => (
-                        <div
-                            className="w-48 h-1/3 m-3 shadow-lg rounded-lg bg-slate-100 flex flex-col gap-2 justify-evenly items-center hover:bg-slate-200 cursor-pointer"
-                            key={index}
-                            onClick={() => {
-                                openModal();
-                                setCurrentStudent(item);
-                            }}
-                        >
-                            <div className="font-bold text-slate-600 px-3 flex-[0.4] text-center text-lg flex flex-col gap-2 items-center">
-                                <AcademicCapIcon className="h-14 w-14 text-[#FF844B]" />
-                                <div>{item.name}</div>
-                                <div>{item.id}</div>
-                            </div>
-                        </div>
-                    ))}
                 </div>
             </div>
         </>

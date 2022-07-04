@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { ReactComponent as Logo } from "../assets/Studzone1.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Academics from "../sections/Academics";
 import Achievements from "../sections/Achievements";
@@ -44,7 +44,8 @@ function classNames(...classes) {
 
 const Details = () => {
     const [openTab, setOpenTab] = React.useState(-1);
-    const { user, setUser } = StudzoneState();
+    const navigate = useNavigate();
+    const { setUser } = StudzoneState();
     const setOtherFalse = (href) => {
         navigation.map((item) => {
             if (href !== item.href) {
@@ -55,6 +56,7 @@ const Details = () => {
 
     const signOut = () => {
         setUser(null);
+        navigate("/");
     };
 
     return (
@@ -171,8 +173,7 @@ const Details = () => {
                                                 </Menu.Item>
                                                 <Menu.Item>
                                                     {({ active }) => (
-                                                        <Link
-                                                            to="/login"
+                                                        <div
                                                             className={classNames(
                                                                 active
                                                                     ? "bg-gray-100"
@@ -182,7 +183,7 @@ const Details = () => {
                                                             onClick={signOut}
                                                         >
                                                             Sign out
-                                                        </Link>
+                                                        </div>
                                                     )}
                                                 </Menu.Item>
                                             </Menu.Items>

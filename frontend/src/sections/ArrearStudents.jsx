@@ -57,14 +57,16 @@ const Arrear = () => {
                                 </div>
                             )}
 
-                            <div className="flex flex-col text-center sm:text-left">
+                            <div className="flex flex-col text-center sm:text-left gap-2">
                                 <div className="font-bold w-48 text-lg tracking-wider text-slate-700">
-                                    {item.student}
+                                    {"Roll_no : "}
+                                    {item.id}
                                 </div>
-                                <div className="font-bold w-48  text-lg tracking-wider text-slate-700 pb-5">
-                                    {item.rollNo}
+                                <div className="font-bold w-48  text-lg tracking-wider text-slate-700">
+                                    {item.paper_name}
                                 </div>
-                                <div className="font-bold w-48 text-md tracking-wider text-slate-700 py-1 capitalize">
+                                <div className="font-bold w-48 text-md tracking-wider text-slate-700 capitalize">
+                                    {"Name : "}
                                     {item.name}
                                 </div>
                             </div>

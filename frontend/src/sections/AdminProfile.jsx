@@ -13,7 +13,6 @@ import NoReccords from "../components/NoReccords";
 const AdminProfile = () => {
     const [staff, setStaff] = useState({});
     const { user } = StudzoneState();
-    console.log(user.id);
 
     const fetchProfile = async () => {
         const { data } = await axios.post(
@@ -42,26 +41,26 @@ const AdminProfile = () => {
                             </div>
                             <div className="flex-[0.7] px-4 py-8">
                                 <div className="text-3xl text-slate-600 font-bold tracking-wider pb-1">
-                                    {staff.name}
+                                    {staff?.name}
                                 </div>
                                 <div className="font-semibold py-1 text-slate-600 tracking-wider uppercase">
-                                    {staff.d_id}
+                                    {staff?.d_id}
                                 </div>
                                 <div className=" py-1 text-slate-500 captialize font-semibold flex flex-row tracking-wider justify-center md:justify-start">
-                                    {staff.designation}
+                                    {staff?.designation}
                                     <div className="px-1 normal-case">
                                         {" - Since, "}
                                         {new Date(
-                                            staff.exp_years
+                                            staff?.exp_years
                                         ).toLocaleDateString("en-us")}
                                     </div>
                                 </div>
                                 <div className="py-1 font-bold text-slate-500 capitalize flex flex-row gap-5 justify-center md:justify-start">
-                                    <div>{staff.gender}</div>
+                                    <div>{staff?.gender}</div>
                                     <div className="">
                                         {"DOB : " +
                                             new Date(
-                                                staff.dob
+                                                staff?.dob
                                             ).toLocaleDateString("en-us")}
                                     </div>
                                 </div>
@@ -71,17 +70,17 @@ const AdminProfile = () => {
                                         href="#"
                                     >
                                         <MailIcon className="h-6 w-6 text-slate-500" />
-                                        {staff.mail_id}
+                                        {staff?.mail_id}
                                     </div>
                                     <div className="py-1 font-bold text-[#FF844B] flex flex-row gap-2">
                                         <PhoneIncomingIcon className="h-6 w-6 text-slate-500  font-medium" />
-                                        {staff.phone_no}
+                                        {staff?.phone_no}
                                     </div>
                                 </div>
                                 <div className="py-1 font-bold text-slate-500 flex gap-2 flex-row">
                                     <LocationMarkerIcon className="h-12 w-12 md:h-8 md:w-8 text-slate-500 font-medium" />
                                     33/148, Sunshine Apartments, AGS Colony, 2nd
-                                    Main Road, Velachery, {staff.address}
+                                    Main Road, Velachery, {staff?.address}
                                 </div>
                             </div>
                         </div>
@@ -91,7 +90,9 @@ const AdminProfile = () => {
                     </div>
                 </div>
             ) : (
-                <NoReccords heading="profile" />
+                <div className="py-10">
+                    <NoReccords heading="profile" />
+                </div>
             )}
         </>
     );

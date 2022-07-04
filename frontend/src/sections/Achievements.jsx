@@ -6,6 +6,7 @@ import { DownloadIcon } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import axios from "axios";
+import { StudzoneState } from "../Context";
 
 const Achievements = () => {
     let [isOpen, setIsOpen] = useState(false);
@@ -15,24 +16,26 @@ const Achievements = () => {
     const [ach_id, setAch_id] = useState("");
 
     const [data, setData] = useState([]);
+    const { user } = StudzoneState();
 
     useEffect(() => {
         const fn = async () => {
             var record = await axios.post(
                 "http://localhost:5000/student/achievements",
                 {
-                    rollno: "19Z205",
+                    rollno: user.id,
                     //   sem_no: sem_no,
                 }
             );
+            record = record.data.data;
+            console.log(user.id);
             console.log(record);
-            record = record.data.data.rows;
             setData([]);
-            record.map((eachpaper) => {
+            record.map((eachpaper, idx) => {
                 var rec = {
                     name: eachpaper.name,
                     date: eachpaper.date,
-                    document: "Certificate1.pdf",
+                    document: `Certificate-${idx}.pdf`,
                     link: eachpaper.img_link,
                     ach_id: eachpaper.ach_id,
                 };
@@ -60,6 +63,8 @@ const Achievements = () => {
 
     function closeModal(e) {
         setIsOpen(false);
+        setName(null);
+        setFile(null);
         e.preventDefault();
     }
 
@@ -68,7 +73,6 @@ const Achievements = () => {
     }
 
     const handleCreate = async () => {
-        console.log("hit");
         const data = new FormData();
         data.append("file", file);
         data.append("upload_preset", "uploads");
@@ -86,35 +90,35 @@ const Achievements = () => {
                 await axios.post(
                     "http://localhost:5000/student/addachievements",
                     {
-                        rollno: "19Z205",
+                        rollno: user.id,
                         name: newAchievement.name,
                         img_link: newAchievement.img,
-                        sem_no: 5,
                         date: new Date()
                             .toJSON()
                             .slice(0, 10)
                             .replace(/-/g, "/"),
                     }
                 );
-                setIsOpen(false);
             } else {
                 await axios.post(
                     "http://localhost:5000/student/updateachievements",
                     {
-                        rollno: "19Z205",
+                        rollno: user.id,
                         name: newAchievement.name,
                         img_link: newAchievement.img,
-                        sem_no: 5,
                         ach_id: ach_id,
-                        //   date: new Date().toJSON().slice(0, 10).replace(/-/g, "/"),
+                        date: new Date()
+                            .toJSON()
+                            .slice(0, 10)
+                            .replace(/-/g, "/"),
                     }
                 );
                 setIsEdit(false);
-                setIsOpen(false);
             }
         } catch (error) {
             console.log(error);
         }
+        closeModal();
     };
 
     return (
@@ -313,9 +317,13 @@ const Achievements = () => {
                                             </button>
                                         </div>
                                         <button className="rounded-full flex items-center justify-center duration-300 p-1 text-slate-500 flex-[0.1] hover:text-slate-700">
-                                            <button>
+                                            <a
+                                                href={item.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
                                                 <DownloadIcon className="h-6 w-6" />
-                                            </button>
+                                            </a>
                                         </button>
                                     </div>
                                 </div>
@@ -323,7 +331,9 @@ const Achievements = () => {
                         </div>
                     </div>
                 ) : (
-                    <NoReccords heading="Achievements" />
+                    <div className="py-10">
+                        <NoReccords heading="Achievements" />
+                    </div>
                 )}
             </div>
         </>
