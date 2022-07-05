@@ -6,7 +6,6 @@ LoginRoute.post("/student/login", async (req, res) => {
   const { rollno, password } = req.body;
   try {
     const result = await db.query(`select count(*) as count from student natural join person where dob = '${password}' and id = '${rollno}';`);
-    console.log(result);
     res.status(200).json(result.rows[ 0 ].count);
   } catch (err) {
     res.json(500, { err: err.message });

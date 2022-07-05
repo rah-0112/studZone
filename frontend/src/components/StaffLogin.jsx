@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { StudzoneState } from "../Context";
+import { InformationCircleIcon, XCircleIcon } from "@heroicons/react/solid";
 
 const list = {
     visible: {
@@ -38,7 +39,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errorRno, setErrorRno] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
-    const { user, setUser } = StudzoneState();
+    const { setUser } = StudzoneState();
 
     const submitButton = async (e) => {
         setErrorPass(false);
@@ -51,21 +52,39 @@ const Login = () => {
                     { userId, password }
                 );
                 if (data === "1") {
-                    console.log("staff");
                     setUser({ id: userId });
+                    localStorage.setItem(
+                        "profile",
+                        JSON.stringify({ id: userId })
+                    );
                     navigate("/staff", { replace: true });
                 } else {
-                    navigate("/stafflogin", { replace: true });
+                    toggle();
                 }
                 setUserId("");
                 setPassword("");
             } else {
                 setErrorPass(true);
+                toggle1();
             }
         } else {
             setErrorRno(true);
-            console.log("invalid login credential");
+            toggle1();
         }
+    };
+
+    const toggle = () => {
+        document.getElementById("slide1").classList.add("show");
+        setTimeout(() => {
+            document.getElementById("slide1").classList.remove("show");
+        }, 3000);
+    };
+
+    const toggle1 = () => {
+        document.getElementById("slide").classList.add("show");
+        setTimeout(() => {
+            document.getElementById("slide").classList.remove("show");
+        }, 3000);
     };
 
     return (
@@ -163,6 +182,18 @@ const Login = () => {
                                 Login
                             </motion.button>
                         </motion.div>
+                        <div id="slide1" className="flex flex-row gap-2">
+                            <XCircleIcon className="w-6 h-6" />
+                            <div className="tracking-wider">
+                                Invalid Login Credentials
+                            </div>
+                        </div>
+                        <div id="slide" className="flex flex-row gap-2">
+                            <InformationCircleIcon className="w-6 h-6" />
+                            <div className="tracking-wider">
+                                Check your username and password
+                            </div>
+                        </div>
                     </motion.div>
                 </div>
             </motion.div>

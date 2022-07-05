@@ -1,12 +1,13 @@
 import { React, useState, useEffect } from "react";
 import NoReccords from "../components/NoReccords";
-import { PlusCircleIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon, PlusCircleIcon } from "@heroicons/react/solid";
 import { PencilIcon } from "@heroicons/react/solid";
 import { DownloadIcon } from "@heroicons/react/outline";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import axios from "axios";
 import { StudzoneState } from "../Context";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Achievements = () => {
     let [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,13 @@ const Achievements = () => {
     const [data, setData] = useState([]);
     const { user } = StudzoneState();
 
+    const toggle = () => {
+        document.getElementById("slide2").classList.add("show");
+        setTimeout(() => {
+            document.getElementById("slide2").classList.remove("show");
+        }, 3000);
+    };
+
     useEffect(() => {
         const fn = async () => {
             var record = await axios.post(
@@ -28,8 +36,6 @@ const Achievements = () => {
                 }
             );
             record = record.data.data;
-            console.log(user.id);
-            console.log(record);
             setData([]);
             record.map((eachpaper, idx) => {
                 var rec = {
@@ -114,6 +120,7 @@ const Achievements = () => {
                     }
                 );
                 setIsEdit(false);
+                toggle();
             }
         } catch (error) {
             console.log(error);
@@ -122,7 +129,11 @@ const Achievements = () => {
     };
 
     return (
-        <>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" onClose={closeModal} className="relative z-50">
                     <Transition.Child
@@ -280,54 +291,69 @@ const Achievements = () => {
                             </div>
                         </div>
                         <div className="w-72 flex-1 flex h-full flex-col mt-5 p-1 pr-2 sm:overflow-auto sm:w-full">
-                            {search(data).map((item, index) => (
-                                <div
-                                    className="w-full my-3 py-2 shadow-lg rounded-lg bg-slate-100 flex flex-col gap-2 sm:flex-row justify-around items-center"
-                                    key={index}
-                                >
-                                    <div className="font-bold text-slate-600 px-3 flex-[0.4] text-center text-lg">
-                                        {item.name}
-                                    </div>
-                                    <div className="font-bold text-slate-600 px-3 flex-[0.2]">
-                                        {item.date
-                                            .slice(0, 10)
-                                            .replace(/-/g, "/")}
-                                    </div>
-                                    <a
-                                        className="font-bold text-slate-600 px-3 flex-[0.2] underline cursor-pointer"
-                                        href={item.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                            <AnimatePresence>
+                                {search(data).map((item, index) => (
+                                    <motion.div
+                                        className="w-full my-3 py-2 shadow-lg rounded-lg bg-slate-100 flex flex-col gap-2 sm:flex-row justify-around items-center"
+                                        key={index}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
                                     >
-                                        {item.document}
-                                    </a>
-                                    <div className="flex flex-row gap-10 sm:gap-5 ">
-                                        <div className="rounded-full flex items-center justify-center duration-300 text-slate-500 flex-[0.1]">
-                                            <button>
-                                                <PencilIcon
-                                                    className="h-6 w-6 hover:text-slate-700"
-                                                    onClick={(e) => {
-                                                        setName(item.name);
-                                                        // setQ(item.name);
-                                                        setAch_id(item.ach_id);
-                                                        setIsEdit(true);
-                                                        openModal();
-                                                    }}
-                                                />
+                                        <div className="font-bold text-slate-600 px-3 flex-[0.4] text-center text-lg">
+                                            {item.name}
+                                        </div>
+                                        <div className="font-bold text-slate-600 px-3 flex-[0.2]">
+                                            {item.date
+                                                .slice(0, 10)
+                                                .replace(/-/g, "/")}
+                                        </div>
+                                        <a
+                                            className="font-bold text-slate-600 px-3 flex-[0.2] underline cursor-pointer"
+                                            href={item.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {item.document}
+                                        </a>
+                                        <div className="flex flex-row gap-10 sm:gap-5 ">
+                                            <div className="rounded-full flex items-center justify-center duration-300 text-slate-500 flex-[0.1]">
+                                                <button>
+                                                    <PencilIcon
+                                                        className="h-6 w-6 hover:text-slate-700"
+                                                        onClick={(e) => {
+                                                            setName(item.name);
+                                                            // setQ(item.name);
+                                                            setAch_id(
+                                                                item.ach_id
+                                                            );
+                                                            setIsEdit(true);
+                                                            openModal();
+                                                        }}
+                                                    />
+                                                </button>
+                                            </div>
+                                            <button className="rounded-full flex items-center justify-center duration-300 p-1 text-slate-500 flex-[0.1] hover:text-slate-700">
+                                                <a
+                                                    href={item.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    <DownloadIcon className="h-6 w-6" />
+                                                </a>
                                             </button>
                                         </div>
-                                        <button className="rounded-full flex items-center justify-center duration-300 p-1 text-slate-500 flex-[0.1] hover:text-slate-700">
-                                            <a
-                                                href={item.link}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                <DownloadIcon className="h-6 w-6" />
-                                            </a>
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
+                                        <div
+                                            id="slide2"
+                                            className="flex flex-row gap-2"
+                                        >
+                                            <CheckCircleIcon className="w-6 h-6" />
+                                            <div className="tracking-wider">
+                                                {"Edited Successfully!"}
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </div>
                     </div>
                 ) : (
@@ -336,7 +362,7 @@ const Achievements = () => {
                     </div>
                 )}
             </div>
-        </>
+        </motion.div>
     );
 };
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import BgImage from "../assets/bg.png";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const Home = () => {
@@ -31,7 +30,12 @@ const Home = () => {
     };
 
     return (
-        <div className="relative">
+        <motion.div
+            className="relative"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             <Navbar classes="absolute top-0 w-full" main={true} />
             <div className={`${pulsing ? "pulse" : ""} loadable`}>
                 <motion.img
@@ -60,7 +64,7 @@ const Home = () => {
                     );
                 })}
             </motion.h1>
-        </div>
+        </motion.div>
     );
 };
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import NoReccords from "../components/NoReccords";
 import axios from "axios";
 import { StudzoneState } from "../Context";
+import { motion } from "framer-motion";
 
 const StudentsAchievements = () => {
     const [q, setQ] = useState("");
@@ -16,7 +17,6 @@ const StudentsAchievements = () => {
                 id: user.id,
             }
         );
-        console.log(data);
         setStudents(data);
     };
 
@@ -38,7 +38,11 @@ const StudentsAchievements = () => {
     };
 
     return (
-        <div>
+        <motion.div
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             {students.length !== 0 ? (
                 <div className="flex flex-col gap-5 px-7 pt-20 sm:h-[91.4vh] pb-16 h-full items-center sm:items-stretch">
                     <div className="flex sm:flex-row sm:justify-between items-center flex-col sm:gap-0 gap-8">
@@ -121,7 +125,7 @@ const StudentsAchievements = () => {
                     <NoReccords heading="Achievements" />
                 </div>
             )}
-        </div>
+        </motion.div>
     );
 };
 

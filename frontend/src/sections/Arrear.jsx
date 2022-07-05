@@ -3,6 +3,7 @@ import React from "react";
 import NoReccords from "../components/NoReccords";
 import axios from "axios";
 import { StudzoneState } from "../Context";
+import { motion } from "framer-motion";
 
 const Arrear = () => {
     const [data, setData] = React.useState([]);
@@ -17,7 +18,6 @@ const Arrear = () => {
                     //   sem_no: sem_no,
                 }
             );
-            console.log(record);
             record = record.data.data.rows;
             setData([]);
             record.map((eachpaper) => {
@@ -32,7 +32,12 @@ const Arrear = () => {
     }, []);
 
     return (
-        <div className="py-10">
+        <motion.div
+            className="py-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             {data.length !== 0 ? (
                 <div className="py-10 flex flex-wrap flex-row w-full overflow-y-auto h-[80.6vh] justify-center">
                     {data.map((item, idx) => (
@@ -76,7 +81,7 @@ const Arrear = () => {
             ) : (
                 <NoReccords heading="Arrear" />
             )}
-        </div>
+        </motion.div>
     );
 };
 

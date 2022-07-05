@@ -3,8 +3,9 @@ import { Reorder } from "framer-motion";
 import axios from "axios";
 import { StudzoneState } from "../Context";
 import NoTable from "./NoTable";
+import { motion } from "framer-motion";
 
-const Table = ({ sem_no, setRefresh, refresh }) => {
+const Table = ({ sem_no }) => {
     const [data, setData] = useState([]);
     const { user } = StudzoneState();
 
@@ -33,13 +34,16 @@ const Table = ({ sem_no, setRefresh, refresh }) => {
             });
         };
         fn();
-        setRefresh(true);
-    }, [refresh]);
-
-    console.log(refresh);
+    }, []);
 
     return (
-        <div className="flex flex-col max-w-7xl h-[68vh] bg-slate-100">
+        <motion.div
+            className="flex flex-col max-w-7xl h-[68vh] bg-slate-100"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+        >
             <div className="overflow-x-auto">
                 <div>
                     <div className="overflow-x-auto overflow-y-auto rounded-md ">
@@ -142,7 +146,7 @@ const Table = ({ sem_no, setRefresh, refresh }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

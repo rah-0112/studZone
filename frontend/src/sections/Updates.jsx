@@ -1,17 +1,8 @@
 import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/effect-cards";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { EffectCards, Pagination, Autoplay } from "swiper";
 import { motion } from "framer-motion";
-import img1 from "../assets/img1.png";
-import img2 from "../assets/img2.png";
-import img3 from "../assets/img3.png";
-import img4 from "../assets/img4.png";
-import img5 from "../assets/img5.png";
 import { useScroll } from "../components/useScroll";
+
+const SwiperUpdates = React.lazy(() => import("../components/SwiperUpdates"));
 
 const Updates = () => {
     const [element, animation] = useScroll();
@@ -20,7 +11,12 @@ const Updates = () => {
         show: { opacity: 1 },
     };
     return (
-        <div className="pt-5 sm:pt-0 pl-10 pr-10 pb-5 md:pb-14">
+        <motion.div
+            className="pt-5 sm:pt-0 pl-10 pr-10 pb-5 md:pb-14"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             <motion.h2
                 className={`font-bold leading-tight md:text-2xl sm:text-xl mt-0 mb-2 flex flex-row items-center w-full md:pl-20 md:pr-20 lg:pl-28 lg:pr-28`}
                 initial={{
@@ -47,53 +43,7 @@ const Updates = () => {
                 transition={{ duration: 1 }}
             >
                 <motion.div className="flex w-[22rem] sm:w-[22rem] xl:w-[25rem]">
-                    <Swiper
-                        autoplay={{
-                            delay: 3000,
-                            disableOnInteraction: false,
-                        }}
-                        pagination={{
-                            clickable: true,
-                        }}
-                        effect={"cards"}
-                        modules={[EffectCards, Autoplay, Pagination]}
-                    >
-                        <SwiperSlide>
-                            <img
-                                src={img1}
-                                alt={img1}
-                                className="w-full h-full object-cover"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img
-                                src={img2}
-                                alt={img2}
-                                className="w-full h-full object-cover"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img
-                                src={img3}
-                                alt={img3}
-                                className="w-full h-full object-cover"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img
-                                src={img4}
-                                alt={img4}
-                                className="w-full h-full object-cover"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img
-                                src={img5}
-                                alt={img5}
-                                className="w-full h-full object-cover"
-                            />
-                        </SwiperSlide>
-                    </Swiper>
+                    <SwiperUpdates />
                 </motion.div>
                 <motion.div className="flex">
                     <div className="w-full xl:max-w-xl md:max-w-md lg:max-w-lg rounded shadow-lg hover:shadow-2xl  duration-500  text-gray-700">
@@ -130,7 +80,7 @@ const Updates = () => {
                     </div>
                 </motion.div>
             </motion.div>
-        </div>
+        </motion.div>
     );
 };
 

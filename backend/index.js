@@ -31,6 +31,3 @@ app.listen(PORT, (err) => {
     else
         console.log(`Server running in port ${PORT}`);
 })
-
-//contact details sumbit
-//update student Marks

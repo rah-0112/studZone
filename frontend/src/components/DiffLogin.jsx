@@ -16,7 +16,11 @@ const item = {
 };
 const DiffLogin = () => {
     return (
-        <>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             <Navbar />
             <motion.div
                 exit={{ opacity: 0 }}
@@ -25,8 +29,6 @@ const DiffLogin = () => {
                 animate="visible"
                 variants={list}
             >
-                {/* {["Student", "Teacher", "Parent", "Alumni"] */}
-
                 <Link to="/login">
                     <motion.button
                         variants={item}
@@ -68,7 +70,7 @@ const DiffLogin = () => {
                     </motion.button>
                 </Link>
             </motion.div>
-        </>
+        </motion.div>
     );
 };
 

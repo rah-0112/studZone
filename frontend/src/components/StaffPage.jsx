@@ -46,7 +46,8 @@ const navigation = [
 const AdminPage = () => {
     const navigate = useNavigate();
     const [openTab, setOpenTab] = React.useState(-1);
-    const { setUser } = StudzoneState();
+    const { user, setUser } = StudzoneState();
+
     const setOtherFalse = (href) => {
         navigation.map((item) => {
             if (href !== item.href) {
@@ -54,15 +55,20 @@ const AdminPage = () => {
             }
         });
     };
+
     const signOut = () => {
         navigate("/");
         setUser(null);
+        localStorage.clear();
     };
+
     return (
-        <>
+        user?.id !== null && (
             <motion.div
                 className="bg-gradient-to-t from-slate-500 to-[#fafafa] w-full h-full duration-300"
                 exit={{ opacity: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
             >
                 <Disclosure as="nav">
                     {({ open, close }) => (
@@ -259,7 +265,7 @@ const AdminPage = () => {
                     </div>
                 )}
             </motion.div>
-        </>
+        )
     );
 };
 

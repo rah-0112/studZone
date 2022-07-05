@@ -1,7 +1,6 @@
 const express = require('express');
-const { fetchStudentsPerCourse, fetchMarks, staffProfile, uploadMarks, fetchAcheivement, fetchArrear, fetchCourses } = require('../controllers/staff.js');
-
 const router = express.Router();
+const { fetchStudentsPerCourse, fetchMarks, staffProfile, uploadMarks, fetchAcheivement, fetchArrear, fetchCourses } = require('../controllers/staff.js');
 
 router.post('/students', fetchStudentsPerCourse);
 router.post('/fetchMarks', fetchMarks);

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Heading from "../components/Heading";
 import address from "../assets/address.png";
-import { ReactComponent as Pointer } from "../assets/pointer.svg";
 import TextareaAutosize from "react-textarea-autosize";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useScroll } from "../components/useScroll";
+
+import { CheckCircleIcon } from "@heroicons/react/solid";
 
 const Contact = () => {
     const nameRef = useRef("");
@@ -21,14 +21,16 @@ const Contact = () => {
     const [setPhoneno, setPhonenoHandler] = useState("");
     const [setReplyType, setReplyTypeHandler] = useState("");
     const [setMessage, setMessageHandler] = useState("");
-    const [sumbit, setSumbit] = useState(false);
+    const [setLoading, setLoadingHandler] = useState(false);
     const [isName, setIsName] = useState(false);
     const [isEmail, setIsEmail] = useState(false);
     const [isPhoneno, setIsPhoneno] = useState(false);
     const [isMessage, setIsMessage] = useState(false);
 
     useEffect(() => {
-        if (!setEmail.match("/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/")) {
+        if (
+            !setEmail.match("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+        ) {
             if (setEmail === "") {
                 setIsEmail(false);
                 return;
@@ -70,21 +72,27 @@ const Contact = () => {
             setName.length > 0 &&
             setEmail.length > 0 &&
             setPhoneno.length > 0 &&
-            setMessage.length > 0
+            setMessage.length > 0 &&
+            !isEmail &&
+            !isPhoneno &&
+            !isMessage &&
+            !isName
         ) {
-            setSumbit(true);
-            // await axios.post("", {
-            //     Name: setName,
-            //     Email: setEmail,
-            //     PhoneNumber: setPhoneno,
-            //     ReplyType: setReplyType,
-            //     Message: setMessage,
-            // });
+            setLoadingHandler(true);
+            await axios.post("http://localhost:5000/student/addMessage", {
+                name: setName,
+                email: setEmail,
+                phoneno: setPhoneno,
+                replytype: setReplyType,
+                message: setMessage,
+            });
+            toggle();
             setNameHandler("");
             setEmailHandler("");
             setPhonenoHandler("");
             setReplyTypeHandler("");
             setMessageHandler("");
+            setLoadingHandler(false);
         }
     };
 
@@ -110,10 +118,20 @@ const Contact = () => {
         show: { opacity: 1 },
     };
 
+    const toggle = () => {
+        document.getElementById("slide2").classList.add("show");
+        setTimeout(() => {
+            document.getElementById("slide2").classList.remove("show");
+        }, 3000);
+    };
+
     return (
         <motion.div
             className="pt-5 pl-10 pr-10 pb-5 md:pb-14 md:mt-14 bg-image"
             ref={element}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
         >
             <motion.h2
                 className={`font-bold leading-tight md:text-2xl sm:text-xl mt-0 mb-2 flex flex-row items-center w-full md:pl-20 md:pr-20 lg:pl-28 lg:pr-28`}
@@ -208,10 +226,11 @@ const Contact = () => {
                     </div>
                 </motion.div>
                 <div class="flex">
-                    <motion.div
+                    <motion.form
                         class="w-full xl:max-w-xl md:max-w-md lg:max-w-lg rounded-3xl shadow-lg flex flex-col md:px-14 px-8 py-8 bg-[#fafafa]"
                         variants={list}
                         animate={animation}
+                        onSubmit={(e) => e.preventDefault()}
                     >
                         <motion.h3
                             className="font-bold leading-tight text-2xl mt-0 mb-10"
@@ -219,7 +238,8 @@ const Contact = () => {
                         >
                             Send us a message
                         </motion.h3>
-                        <motion.div className="name" variants={item}>
+
+                        <motion.div className="name relative" variants={item}>
                             <label
                                 htmlFor="name"
                                 className={`${
@@ -238,7 +258,7 @@ const Contact = () => {
                                 }
                                 placeholder="Your name"
                                 required
-                                className={`bg-transparent relative font-medium outline-none focus:outline-none w-full mb-4 mt-3 rounded-2xl bg-gray-50 p-3 ring-2 duration-300 focus-within:ring-[#FF844B] ${
+                                className={`bg-transparent relative font-medium outline-none focus:outline-none w-full mb-4 mt-3 rounded-2xl bg-gray-50 py-2 px-3 ring-2 duration-300 focus-within:ring-slate-500 ${
                                     isName
                                         ? "ring-red-500 focus:ring-red-500"
                                         : "ring-gray-200"
@@ -250,7 +270,7 @@ const Contact = () => {
                                 </span>
                             )}
                         </motion.div>
-                        <motion.div className="phone" variants={item}>
+                        <motion.div className="phone relative" variants={item}>
                             <label
                                 htmlFor="phone"
                                 className={`${
@@ -270,19 +290,24 @@ const Contact = () => {
                                 type="text"
                                 required
                                 placeholder="Your phone number"
-                                className={`bg-transparent relative font-medium outline-none focus:outline-none w-full mb-4 mt-3 rounded-2xl bg-gray-50 p-3 ring-2 duration-300 focus-within:ring-[#FF844B] ${
+                                className={`bg-transparent relative font-medium outline-none focus:outline-none w-full mb-4 mt-3 rounded-2xl bg-gray-50 px-3 py-2 ring-2 duration-300 focus-within:ring-slate-500 ${
                                     isPhoneno
                                         ? "ring-red-500 focus:ring-red-500"
                                         : "ring-gray-200"
                                 } border-2 border-transparent`}
                             />
                             {isPhoneno && (
-                                <span className="text-red-500 font-medium absolute right-2 top-[0] ">
-                                    Invalid Phone Number
-                                </span>
+                                <>
+                                    <span className="text-red-500 font-medium absolute right-2 top-[0] sm:block hidden">
+                                        Invalid Phone Number
+                                    </span>
+                                    <span className="text-red-500 font-medium absolute right-2 top-[0] block sm:hidden ">
+                                        Invalid
+                                    </span>
+                                </>
                             )}
                         </motion.div>
-                        <motion.div className="email" variants={item}>
+                        <motion.div className="email relative" variants={item}>
                             <label
                                 htmlFor="email"
                                 className={`${
@@ -301,7 +326,7 @@ const Contact = () => {
                                 type="text"
                                 required
                                 placeholder="Your email"
-                                className={`bg-transparent relative font-medium outline-none focus:outline-none w-full mb-4 mt-3 rounded-2xl bg-gray-50 p-3 ring-2 duration-300 focus-within:ring-[#FF844B] ${
+                                className={`bg-transparent relative font-medium outline-none focus:outline-none w-full mb-4 mt-3 rounded-2xl bg-gray-50 px-3 py-2 ring-2 duration-300 focus-within:ring-slate-500 ${
                                     isEmail
                                         ? "ring-red-500 focus:ring-red-500"
                                         : "ring-gray-200"
@@ -323,11 +348,12 @@ const Contact = () => {
                                     <input
                                         type="radio"
                                         class="form-radio"
-                                        name="accountType"
-                                        value="personal"
+                                        name="Phone"
+                                        value="Phone"
                                         id="personal"
+                                        checked={setReplyType === "Phone"}
                                         ref={typeRef}
-                                        conChange={() =>
+                                        onChange={() =>
                                             setReplyTypeHandler(
                                                 typeRef.current.value
                                             )
@@ -342,9 +368,10 @@ const Contact = () => {
                                         id="emailRadio"
                                         type="radio"
                                         class="form-radio"
-                                        name="accountType"
-                                        value="business"
+                                        name="Email"
+                                        value="Email"
                                         ref={type1Ref}
+                                        checked={setReplyType === "Email"}
                                         onChange={() =>
                                             setReplyTypeHandler(
                                                 type1Ref.current.value
@@ -357,7 +384,10 @@ const Contact = () => {
                                 </div>
                             </div>
                         </motion.div>
-                        <motion.div className="message" variants={item}>
+                        <motion.div
+                            className="message relative"
+                            variants={item}
+                        >
                             <label
                                 for="Messages"
                                 className={`${
@@ -376,7 +406,7 @@ const Contact = () => {
                                 value={setMessage}
                                 placeholder="Your message"
                                 maxRows={12}
-                                className={`bg-transparent relative font-medium outline-none focus:outline-none duration-300 focus-within:ring-[#FF844B] resize-none w-full mb-5 mt-3 rounded-2xl bg-gray-50 p-3 ring-2 ${
+                                className={`bg-transparent relative font-medium outline-none focus:outline-none duration-300 focus-within:ring-slate-500 resize-none w-full mb-5 mt-3 rounded-2xl bg-gray-50 px-3 py-2 ring-2 ${
                                     isMessage
                                         ? "ring-red-500  focus:ring-red-500"
                                         : "ring-gray-200"
@@ -384,20 +414,54 @@ const Contact = () => {
                                 required
                             />
                             {isMessage && (
-                                <span className="text-red-500 font-medium absolute right-2 top-[0] ">
-                                    Characters exceeding 150
-                                </span>
+                                <>
+                                    <span className="text-red-500 font-medium absolute right-0 top-0 hidden sm:block">
+                                        Characters exceeding 150
+                                    </span>
+                                    <span className="text-red-500 font-medium absolute right-0 top-0 block sm:hidden">
+                                        {"> 150"}
+                                    </span>
+                                </>
                             )}
                         </motion.div>
                         <motion.button
-                            className="bg-[#FF844B] font-bold text-white p-2 rounded-full w-full hover:bg-[#df703d]"
                             variants={item}
+                            type="sumbit"
+                            className={`inline-flex items-center w-full px-4 py-2 font-semibold leading-6 text-sm shadow rounded-full text-white bg-[#FF844B] hover:bg-[#cb6231] transition ease-in-out duration-150 justify-center ${
+                                setLoading ? "disabled cursor-not-allowed" : ""
+                            }`}
                             onClick={submitHandler}
                         >
-                            {sumbit ? "Sending..." : "Send"}
+                            <svg
+                                className={`animate-spin -ml-1 mr-3 h-5 w-5 text-white ${
+                                    setLoading ? "block" : "hidden"
+                                }`}
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    stroke-width="4"
+                                ></circle>
+                                <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                            </svg>
+                            {setLoading ? "Sending..." : "Send"}
                         </motion.button>
-                    </motion.div>
+                    </motion.form>
                 </div>
+            </div>
+            <div id="slide2" className="flex flex-row gap-2">
+                <CheckCircleIcon className="w-6 h-6" />
+                <div className="tracking-wider">Message Sent Successfully!</div>
             </div>
         </motion.div>
     );

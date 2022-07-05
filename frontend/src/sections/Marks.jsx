@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { AcademicCapIcon } from "@heroicons/react/solid";
+import { AcademicCapIcon, CheckCircleIcon } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import axios from "axios";
 import { StudzoneState } from "../Context";
+import { motion } from "framer-motion";
 
 const Marks = () => {
     let [isOpen, setIsOpen] = useState(false);
     const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
-    const [currentCourse, setCurrentCourse] = useState({});
+    const [currentCourse, setCurrentCourse] = useState(null);
+    const [currentSemester, setCurrentSemester] = useState(4);
     const [currentStudent, setCurrentStudent] = useState({});
     const { user } = StudzoneState();
 
@@ -34,11 +36,12 @@ const Marks = () => {
     const uploadMarks = async () => {
         await axios.post("http://localhost:5000/staff/uploadMarks", {
             ...form,
-            sem_no: 4,
+            sem_no: currentSemester,
             staff_id: user.id,
             stu_id: currentStudent.id,
             paper_name: currentCourse,
         });
+        toggle();
         closeModal();
     };
 
@@ -49,7 +52,7 @@ const Marks = () => {
                 staff_id: user.id,
                 stu_id: currentStudent.id,
                 paper_name: currentCourse,
-                sem_no: 4,
+                sem_no: currentSemester,
             }
         );
         setForm(data);
@@ -104,8 +107,20 @@ const Marks = () => {
         fetchStudentsPerCourse();
     }, [currentCourse]);
 
+    const toggle = () => {
+        document.getElementById("slide2").classList.add("show");
+        setTimeout(() => {
+            document.getElementById("slide2").classList.remove("show");
+        }, 3000);
+    };
+
     return (
-        <>
+        <motion.div
+            className={`${currentCourse !== null ? "h-full" : " h-[91vh]"}`}
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" onClose={closeModal} className="relative z-50">
                     <Transition.Child
@@ -269,17 +284,29 @@ const Marks = () => {
                     </div>
                 </Dialog>
             </Transition>
-            <div className="flex  flex-col items-center lg:justify-start justify-center w-full lg:h-[91vh] h-full mt-0.5 pt-20 gap-10 lg:gap-0 lg:pt-0 ">
+            <div
+                className={`flex flex-col lg:justify-start w-full lg:h-[91vh] mt-0.5 pt-20 gap-10 lg:gap-0 lg:pt-0`}
+            >
                 <div
-                    className="py-10 font-bold text-slate-500 underline
+                    className="py-10 font-bold text-slate-600 flex w-full items-center justify-center gap-2
                 "
                 >
-                    {"CURRENT SEMESTER : 4"}
+                    <div className="underline">{"CURRENT SEMESTER : "}</div>
+                    {currentSemester}
+
+                    <button
+                        className="text-[#FF844B] font-semibold"
+                        onClick={() =>
+                            setCurrentSemester((prev) => (prev % 8) + 1)
+                        }
+                    >
+                        Change
+                    </button>
                 </div>
                 <div className="flex-col flex lg:flex-row">
                     <div className="w-full flex-[0.2] mx-2 lg:flex px-2 ">
                         <div
-                            className={`w-full  flex flex-col items-center bg-slate-100 rounded-xl lg:bg-opacity-30 backdrop-filter backdrop-blur-lg px-2 lg:h-[68vh] overflow-y-auto ${
+                            className={`w-full flex flex-col items-center bg-slate-100 rounded-xl lg:bg-opacity-30 backdrop-filter backdrop-blur-lg px-2 lg:h-[68vh] overflow-y-auto ${
                                 courses.length > 6
                                     ? "justify-start"
                                     : "justify-evenly"
@@ -323,9 +350,15 @@ const Marks = () => {
                             </div>
                         ))}
                     </div>
+                    <div id="slide2" className="flex flex-row gap-2">
+                        <CheckCircleIcon className="w-6 h-6" />
+                        <div className="tracking-wider">
+                            Updated Successfully!
+                        </div>
+                    </div>
                 </div>
             </div>
-        </>
+        </motion.div>
     );
 };
 

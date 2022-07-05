@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import NoReccords from "../components/NoReccords";
 import { StudzoneState } from "../Context";
+import { motion } from "framer-motion";
 
 const Fee = () => {
     const [fees, setFees] = useState([]);
@@ -21,7 +22,12 @@ const Fee = () => {
     });
 
     return (
-        <div className="py-10">
+        <motion.div
+            className="py-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             {fees.length > 0 ? (
                 <div className="py-10 flex flex-wrap flex-row w-full overflow-y-auto h-[80.6vh] justify-center">
                     {fees.map((item, idx) => (
@@ -59,7 +65,7 @@ const Fee = () => {
             ) : (
                 <NoReccords heading="Fee" />
             )}
-        </div>
+        </motion.div>
     );
 };
 

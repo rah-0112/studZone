@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { ReactComponent as Background } from "../assets/LoginBG.svg";
 import LBg from "../assets/loginleft.png";
 import Line from "../assets/Line.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { StudzoneState } from "../Context";
+import { InformationCircleIcon, XCircleIcon } from "@heroicons/react/solid";
 
 const list = {
     visible: {
@@ -25,10 +26,12 @@ const list = {
 };
 
 const item = {
-    visible: { opacity: 1, x: 0 },
-    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 25 },
     transition: {
         duration: 1,
+        type: "spring",
+        stiffness: 1000,
     },
 };
 
@@ -38,7 +41,21 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errorRno, setErrorRno] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
-    const { user, setUser } = StudzoneState();
+    const { setUser } = StudzoneState();
+
+    const toggle = () => {
+        document.getElementById("slide1").classList.add("show");
+        setTimeout(() => {
+            document.getElementById("slide1").classList.remove("show");
+        }, 3000);
+    };
+
+    const toggle1 = () => {
+        document.getElementById("slide").classList.add("show");
+        setTimeout(() => {
+            document.getElementById("slide").classList.remove("show");
+        }, 3000);
+    };
 
     const submitButton = async (e) => {
         setErrorPass(false);
@@ -57,16 +74,22 @@ const Login = () => {
                     console.log("student");
                     navigate("/profile", { replace: true });
                     setUser({ id: rollno });
+                    localStorage.setItem(
+                        "profile",
+                        JSON.stringify({ id: rollno })
+                    );
                 } else {
-                    navigate("/login", { replace: true });
+                    toggle();
                 }
                 setRollno("");
                 setPassword("");
             } else {
                 setErrorPass(true);
+                toggle1();
             }
         } else {
             setErrorRno(true);
+            toggle1();
             console.log("invalid login credential");
         }
     };
@@ -112,7 +135,7 @@ const Login = () => {
                         <motion.div className="lg:w-[25vw]" variants={item}>
                             <div>
                                 <div className="font-bold mb-4 grid grid-cols-2">
-                                    <div>Rollno</div>
+                                    <div>Roll Number</div>
                                     {errorRno && (
                                         <span className="text-red-500 font-medium right-2 top-[3.8rem] text-right ">
                                             Invalid Rollno
@@ -158,14 +181,26 @@ const Login = () => {
                             variants={item}
                         >
                             <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.99 }}
                                 className="w-60 bg-[#FF844B] font-bold text-white p-2 rounded-full"
                                 onClick={(e) => submitButton(e)}
                             >
                                 Login
                             </motion.button>
                         </motion.div>
+                        <div id="slide1" className="flex flex-row gap-2">
+                            <XCircleIcon className="w-6 h-6" />
+                            <div className="tracking-wider">
+                                Invalid Login Credentials
+                            </div>
+                        </div>
+                        <div id="slide" className="flex flex-row gap-2">
+                            <InformationCircleIcon className="w-6 h-6" />
+                            <div className="tracking-wider">
+                                Check your username and password
+                            </div>
+                        </div>
                     </motion.div>
                 </div>
             </motion.div>

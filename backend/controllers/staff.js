@@ -46,7 +46,6 @@ const fetchStudentsPerCourse = async (req, res) => {
 }
 
 const uploadMarks = async (req, res) => {
-    //console.log(req.body);
     const { staff_id, paper_name, stu_id, ca1, ca2, ca3, ap, tut, sem, sem_no } = req.body;
     try {
         const check = await db.query(`select * from student where id = '${stu_id}'`);
@@ -63,7 +62,6 @@ const uploadMarks = async (req, res) => {
 }
 
 const fetchMarks = async (req, res) => {
-    console.log(req.body);
     const { staff_id, paper_name, stu_id, sem_no } = req.body;
     try {
         const check = await db.query(`select * from staff where id = '${staff_id}';`);
@@ -109,4 +107,12 @@ const fetchArrear = async (req, res) => {
     }
 }
 
-module.exports = { staffProfile, uploadMarks, fetchMarks, fetchStudentsPerCourse, fetchAcheivement, fetchArrear, fetchCourses };
+module.exports = {
+    staffProfile,
+    uploadMarks,
+    fetchMarks,
+    fetchStudentsPerCourse,
+    fetchAcheivement,
+    fetchArrear,
+    fetchCourses
+};

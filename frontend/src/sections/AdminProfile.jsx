@@ -4,22 +4,27 @@ import {
     PhoneIncomingIcon,
 } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
-import Chart from "../components/Chart";
 import axios from "axios";
 
 import { StudzoneState } from "../Context";
-import NoReccords from "../components/NoReccords";
+import { motion } from "framer-motion";
+
+const Chart = React.lazy(() => import("../components/Chart"));
+const NoReccords = React.lazy(() => import("../components/NoReccords"));
 
 const AdminProfile = () => {
     const [staff, setStaff] = useState({});
+    const [loadProfile, setLoadProfile] = useState(false);
     const { user } = StudzoneState();
 
     const fetchProfile = async () => {
+        setLoadProfile(true);
         const { data } = await axios.post(
             "http://localhost:5000/staff/profile",
             { id: user.id }
         );
         setStaff(data);
+        setLoadProfile(false);
     };
 
     useEffect(() => {
@@ -28,8 +33,13 @@ const AdminProfile = () => {
 
     return (
         <>
-            {staff !== null ? (
-                <div className="w-full mt-0.5 py-10 h-full">
+            {staff !== null && !loadProfile ? (
+                <motion.div
+                    className="w-full mt-0.5 py-10 h-full"
+                    exit={{ opacity: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
                     <div className="rounded-3xl w-full h-full bg-slate-100 flex flex-col text-center md:text-left">
                         <div className="flex flex-col md:flex-row">
                             <div className="flex-[0.3] flex items-center justify-center p-8 pb-0 md:p-16">
@@ -88,7 +98,7 @@ const AdminProfile = () => {
                             <Chart />
                         </div>
                     </div>
-                </div>
+                </motion.div>
             ) : (
                 <div className="py-10">
                     <NoReccords heading="profile" />
