@@ -4,6 +4,7 @@ import NoReccords from "../components/NoReccords";
 import axios from "axios";
 import { StudzoneState } from "../Context";
 import { motion } from "framer-motion";
+import { API } from "../api";
 
 const Arrear = () => {
     const [data, setData] = React.useState([]);
@@ -11,13 +12,9 @@ const Arrear = () => {
 
     React.useEffect(() => {
         const fn = async () => {
-            var record = await axios.post(
-                "http://localhost:5000/student/arrear",
-                {
-                    rollno: user.id,
-                    //   sem_no: sem_no,
-                }
-            );
+            var record = await axios.post(API + "/student/arrear", {
+                rollno: user.id,
+            });
             record = record.data.data.rows;
             setData([]);
             record.map((eachpaper) => {

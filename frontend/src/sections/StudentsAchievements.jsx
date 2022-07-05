@@ -3,6 +3,7 @@ import NoReccords from "../components/NoReccords";
 import axios from "axios";
 import { StudzoneState } from "../Context";
 import { motion } from "framer-motion";
+import { API } from "../api";
 
 const StudentsAchievements = () => {
     const [q, setQ] = useState("");
@@ -11,12 +12,9 @@ const StudentsAchievements = () => {
     const { user } = StudzoneState();
 
     const fetchStudents = async () => {
-        const { data } = await axios.post(
-            "http://localhost:5000/staff/achievements",
-            {
-                id: user.id,
-            }
-        );
+        const { data } = await axios.post(API + "/staff/achievements", {
+            id: user.id,
+        });
         setStudents(data);
     };
 

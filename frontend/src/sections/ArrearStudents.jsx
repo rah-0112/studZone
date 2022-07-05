@@ -4,16 +4,16 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import NoReccords from "../components/NoReccords";
 import { StudzoneState } from "../Context";
+import { API } from "../api";
 
 const Arrear = () => {
     const [students, setStudents] = useState([]);
     const { user } = StudzoneState();
 
     const fetchArrearStudents = async () => {
-        const { data } = await axios.post(
-            "http://localhost:5000/staff/arrear",
-            { id: user.id }
-        );
+        const { data } = await axios.post(API + "/staff/arrear", {
+            id: user.id,
+        });
         setStudents(data);
     };
 

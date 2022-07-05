@@ -8,6 +8,7 @@ import { Fragment } from "react";
 import axios from "axios";
 import { StudzoneState } from "../Context";
 import { AnimatePresence, motion } from "framer-motion";
+import { API } from "../api";
 
 const Achievements = () => {
     let [isOpen, setIsOpen] = useState(false);
@@ -28,13 +29,9 @@ const Achievements = () => {
 
     useEffect(() => {
         const fn = async () => {
-            var record = await axios.post(
-                "http://localhost:5000/student/achievements",
-                {
-                    rollno: user.id,
-                    //   sem_no: sem_no,
-                }
-            );
+            var record = await axios.post(API + "/student/achievements", {
+                rollno: user.id,
+            });
             record = record.data.data;
             setData([]);
             record.map((eachpaper, idx) => {
@@ -93,32 +90,20 @@ const Achievements = () => {
                 img: url,
             };
             if (!isEdit) {
-                await axios.post(
-                    "http://localhost:5000/student/addachievements",
-                    {
-                        rollno: user.id,
-                        name: newAchievement.name,
-                        img_link: newAchievement.img,
-                        date: new Date()
-                            .toJSON()
-                            .slice(0, 10)
-                            .replace(/-/g, "/"),
-                    }
-                );
+                await axios.post(API + "/student/addachievements", {
+                    rollno: user.id,
+                    name: newAchievement.name,
+                    img_link: newAchievement.img,
+                    date: new Date().toJSON().slice(0, 10).replace(/-/g, "/"),
+                });
             } else {
-                await axios.post(
-                    "http://localhost:5000/student/updateachievements",
-                    {
-                        rollno: user.id,
-                        name: newAchievement.name,
-                        img_link: newAchievement.img,
-                        ach_id: ach_id,
-                        date: new Date()
-                            .toJSON()
-                            .slice(0, 10)
-                            .replace(/-/g, "/"),
-                    }
-                );
+                await axios.post(API + "/student/updateachievements", {
+                    rollno: user.id,
+                    name: newAchievement.name,
+                    img_link: newAchievement.img,
+                    ach_id: ach_id,
+                    date: new Date().toJSON().slice(0, 10).replace(/-/g, "/"),
+                });
                 setIsEdit(false);
                 toggle();
             }
@@ -322,7 +307,6 @@ const Achievements = () => {
                                                         className="h-6 w-6 hover:text-slate-700"
                                                         onClick={(e) => {
                                                             setName(item.name);
-                                                            // setQ(item.name);
                                                             setAch_id(
                                                                 item.ach_id
                                                             );

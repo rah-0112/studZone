@@ -4,8 +4,8 @@ import TextareaAutosize from "react-textarea-autosize";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useScroll } from "../components/useScroll";
-
 import { CheckCircleIcon } from "@heroicons/react/solid";
+import { API } from "../api";
 
 const Contact = () => {
     const nameRef = useRef("");
@@ -14,8 +14,6 @@ const Contact = () => {
     const messageRef = useRef("");
     const typeRef = useRef("");
     const type1Ref = useRef("");
-
-    // States
     const [setName, setNameHandler] = useState("");
     const [setEmail, setEmailHandler] = useState("");
     const [setPhoneno, setPhonenoHandler] = useState("");
@@ -66,7 +64,6 @@ const Contact = () => {
         }
     }, [setMessage]);
 
-    // axios
     const submitHandler = async () => {
         if (
             setName.length > 0 &&
@@ -79,7 +76,7 @@ const Contact = () => {
             !isName
         ) {
             setLoadingHandler(true);
-            await axios.post("http://localhost:5000/student/addMessage", {
+            await axios.post(API + "/student/addMessage", {
                 name: setName,
                 email: setEmail,
                 phoneno: setPhoneno,

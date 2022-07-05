@@ -12,6 +12,7 @@ import {
     PhoneIncomingIcon,
     UserIcon,
 } from "@heroicons/react/solid";
+import { API } from "../api";
 const NoReccords = React.lazy(() => import("../components/NoReccords"));
 
 const Profile = () => {
@@ -23,20 +24,18 @@ const Profile = () => {
 
     const fetchProfile = async () => {
         setLoadProfile(true);
-        const { data } = await axios.post(
-            "http://localhost:5000/student/profile",
-            { rollno: user.id }
-        );
+        const { data } = await axios.post(API + "/student/profile", {
+            rollno: user.id,
+        });
         setStudent(data.data[0]);
         setLoadProfile(false);
     };
 
     const fetchParents = async () => {
         setLoadParents(true);
-        const { data } = await axios.post(
-            "http://localhost:5000/student/parentDetails",
-            { rollno: user.id }
-        );
+        const { data } = await axios.post(API + "/student/parentDetails", {
+            rollno: user.id,
+        });
         setParents(data);
         setLoadParents(false);
     };
@@ -53,7 +52,7 @@ const Profile = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
         >
-            <LoginNav profile={"hello"} />
+            <LoginNav />
             <>
                 {student !== null && !loadProfile && !loadParents ? (
                     <div className="w-full lg:px-32 px-5 sm:px-20 md:px-16 py-6">
@@ -62,7 +61,7 @@ const Profile = () => {
                                 <div className="flex-[0.3] flex items-center justify-center p-8 md:p-16 md:pb-18">
                                     <img
                                         className="h-40 w-40 rounded-full ring-slate-600 ring-2 p-1"
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                        src="https://xsgames.co/randomusers/avatar.php?g=male"
                                         alt=""
                                     />
                                 </div>
@@ -101,8 +100,8 @@ const Profile = () => {
                                     </div>
                                     <div className="py-1 font-bold text-slate-500 flex gap-2 flex-row md:w-3/4 justify-center items-center w-full">
                                         <LocationMarkerIcon className="h-12 w-12 md:h-8 md:w-8 text-slate-500 font-medium" />
-                                        33/148, Sunshine Apartments, AGS Colony,
-                                        2nd Main Road, Velachery,{" "}
+                                        33/148, Ventizil Apartments, Ramb
+                                        Colony, 2nd Main Phase, Tamilnadu ,{" "}
                                         {student?.address}
                                     </div>
                                     <div className="pt-3 font-bold text-slate-500 flex gap-2 flex-row md:w-3/4 w-full justify-evenly">

@@ -1,28 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ReactComponent as Logo } from "../assets/STUDZONE.svg";
-import { ReactComponent as Logo1 } from "../assets/Studzone1.svg";
-import { ReactComponent as DwnLogo } from "../assets/downarrow.svg";
 
-const Navbar = ({ main, classes, login }) => {
+const Navbar = ({ main, classes }) => {
     return (
         <div className={`${classes}`}>
-            {login && (
-                <div className="profileBG -z-1">
-                    <div className="w-full h-[2px] bg-[#FF844B]"></div>
-                    <header className="flex flex-row pt-5 pl-7 pr-7 md:pl-20 md:pr-20 lg:pl-32 lg:pr-32 items-center pb-5 justify-between">
-                        <Logo1 />
-                        <div className="flex flex-row gap-2 text-lg">
-                            <div className="font-bold hidden md:block">
-                                Welcome, Karthick
-                            </div>
-                            <DwnLogo className="mt-1" />
-                        </div>
-                    </header>
-                </div>
-            )}
-
             {main && (
                 <motion.div
                     className="w-full h-[2px] bg-[#FF844B]"

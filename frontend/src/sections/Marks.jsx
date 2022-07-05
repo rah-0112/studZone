@@ -5,6 +5,7 @@ import { Fragment } from "react";
 import axios from "axios";
 import { StudzoneState } from "../Context";
 import { motion } from "framer-motion";
+import { API } from "../api";
 
 const Marks = () => {
     let [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ const Marks = () => {
     const { user } = StudzoneState();
 
     const fetchCourses = async () => {
-        var { data } = await axios.post("http://localhost:5000/staff/courses", {
+        var { data } = await axios.post(API + "/staff/courses", {
             id: user.id,
         });
         data = data.map((val, index) =>
@@ -26,15 +27,15 @@ const Marks = () => {
     };
 
     const fetchStudentsPerCourse = async () => {
-        const { data } = await axios.post(
-            "http://localhost:5000/staff/students",
-            { id: user.id, paper_name: currentCourse }
-        );
+        const { data } = await axios.post(API + "/staff/students", {
+            id: user.id,
+            paper_name: currentCourse,
+        });
         setStudents(data);
     };
 
     const uploadMarks = async () => {
-        await axios.post("http://localhost:5000/staff/uploadMarks", {
+        await axios.post(API + "/staff/uploadMarks", {
             ...form,
             sem_no: currentSemester,
             staff_id: user.id,
@@ -46,15 +47,12 @@ const Marks = () => {
     };
 
     const fetchMarks = async () => {
-        const { data } = await axios.post(
-            "http://localhost:5000/staff/fetchMarks",
-            {
-                staff_id: user.id,
-                stu_id: currentStudent.id,
-                paper_name: currentCourse,
-                sem_no: currentSemester,
-            }
-        );
+        const { data } = await axios.post(API + "/staff/fetchMarks", {
+            staff_id: user.id,
+            stu_id: currentStudent.id,
+            paper_name: currentCourse,
+            sem_no: currentSemester,
+        });
         setForm(data);
     };
 

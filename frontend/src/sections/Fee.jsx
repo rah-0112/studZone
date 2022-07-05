@@ -5,13 +5,14 @@ import { useState } from "react";
 import NoReccords from "../components/NoReccords";
 import { StudzoneState } from "../Context";
 import { motion } from "framer-motion";
+import { API } from "../api";
 
 const Fee = () => {
     const [fees, setFees] = useState([]);
     const { user } = StudzoneState();
 
     const fetchFees = async () => {
-        const { data } = await axios.post("http://localhost:5000/student/fee", {
+        const { data } = await axios.post(API + "/student/fee", {
             rollno: user.id,
         });
         setFees(data.data);

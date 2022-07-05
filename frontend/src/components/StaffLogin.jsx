@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { ReactComponent as Background } from "../assets/LoginBG.svg";
 import LBg from "../assets/loginleft.png";
 import Line from "../assets/Line.png";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { StudzoneState } from "../Context";
 import { InformationCircleIcon, XCircleIcon } from "@heroicons/react/solid";
+import { API } from "../api";
 
 const list = {
     visible: {
@@ -39,18 +40,20 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errorRno, setErrorRno] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
+    const [setLoading, setLoadingHandler] = useState(false);
     const { setUser } = StudzoneState();
 
     const submitButton = async (e) => {
         setErrorPass(false);
         setErrorRno(false);
         e.preventDefault();
+        setLoadingHandler(true);
         if (userId.match("[0-9A-Z]{5}")) {
             if (password.match("[A-Z0-9-]{10}")) {
-                const { data } = await axios.post(
-                    "http://localhost:5000/staff/login",
-                    { userId, password }
-                );
+                const { data } = await axios.post(API + "/staff/login", {
+                    userId,
+                    password,
+                });
                 if (data === "1") {
                     setUser({ id: userId });
                     localStorage.setItem(
@@ -71,6 +74,7 @@ const Login = () => {
             setErrorRno(true);
             toggle1();
         }
+        setLoadingHandler(false);
     };
 
     const toggle = () => {
@@ -125,6 +129,13 @@ const Login = () => {
                                 className="ml-5 lg:h-20 md:h-15"
                             ></img>
                         </motion.div>
+                        <motion.div
+                            variants={item}
+                            className="semibold tracking-wider font-pop w-full flex md:flex-row flex-col gap-3 items-center justify-center text-gray-400"
+                        >
+                            <div className="">{"User Id: SI201"}</div>{" "}
+                            <div className="">{"Password: 1972-01-02"}</div>
+                        </motion.div>
                         <motion.div className="lg:w-[25vw]" variants={item}>
                             <div>
                                 <div className="font-bold mb-4 grid grid-cols-2">
@@ -176,10 +187,32 @@ const Login = () => {
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                className="w-60 bg-[#FF844B] font-bold text-white p-2 rounded-full"
+                                className="w-60 bg-[#FF844B] font-bold text-white p-2 rounded-full flex flex-row items-center justify-center"
                                 onClick={(e) => submitButton(e)}
                             >
-                                Login
+                                <svg
+                                    className={`animate-spin -ml-1 mr-3 h-5 w-5 text-white ${
+                                        setLoading ? "block" : "hidden"
+                                    }`}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        stroke-width="4"
+                                    ></circle>
+                                    <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
+                                </svg>
+                                {setLoading ? "Logging in..." : "Login"}
                             </motion.button>
                         </motion.div>
                         <div id="slide1" className="flex flex-row gap-2">

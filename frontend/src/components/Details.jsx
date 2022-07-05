@@ -60,9 +60,6 @@ const Details = () => {
         navigate("/");
     };
 
-    // if (user.id === null) navigate("/login");
-    // console.log(user.id);
-
     return (
         user?.id !== null && (
             <motion.div
@@ -77,7 +74,6 @@ const Details = () => {
                             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                                 <div className="relative flex items-center justify-between h-16">
                                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                                        {/* Mobile menu button*/}
                                         <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-500 ">
                                             <span className="sr-only">
                                                 Open main menu
@@ -143,7 +139,6 @@ const Details = () => {
                                         </div>
                                     </div>
                                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                        {/* Profile dropdown */}
                                         <Menu
                                             as="div"
                                             className="ml-3 relative"
@@ -155,7 +150,7 @@ const Details = () => {
                                                     </span>
                                                     <img
                                                         className="h-8 w-8 rounded-full"
-                                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                                        src="https://xsgames.co/randomusers/avatar.php?g=male"
                                                         alt=""
                                                     />
                                                 </Menu.Button>
@@ -252,7 +247,7 @@ const Details = () => {
                         </>
                     )}
                 </Disclosure>
-                <div>
+                <>
                     {openTab === -1 ? (
                         <div className="w-full grid place-items-center h-[91vh] pl-7 pr-7 mt-0.5 md:pl-20 md:pr-20 lg:pl-32 lg:pr-32  font-pop text-2xl font-bold tracking-wider leading-loose text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-900 text-center justify-center">
                             <div className="w-full md:w-2/3">
@@ -288,7 +283,7 @@ const Details = () => {
                             ))}
                         </div>
                     )}
-                </div>
+                </>
             </motion.div>
         )
     );

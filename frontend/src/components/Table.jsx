@@ -4,6 +4,7 @@ import axios from "axios";
 import { StudzoneState } from "../Context";
 import NoTable from "./NoTable";
 import { motion } from "framer-motion";
+import { API } from "../api";
 
 const Table = ({ sem_no }) => {
     const [data, setData] = useState([]);
@@ -11,13 +12,10 @@ const Table = ({ sem_no }) => {
 
     useEffect(() => {
         const fn = async () => {
-            var record = await axios.post(
-                "http://localhost:5000/student/academics",
-                {
-                    rollno: user.id,
-                    sem_no: sem_no,
-                }
-            );
+            var record = await axios.post(API + "/student/academics", {
+                rollno: user.id,
+                sem_no: sem_no,
+            });
             record = record.data.data.rows;
             setData([]);
             record.map((eachpaper) => {
@@ -73,12 +71,6 @@ const Table = ({ sem_no }) => {
                                             <th className="px-3 py-4 border-b-2 border-gray-20 text-center text-sm font-semibold text-white uppercase tracking-wider">
                                                 Semester
                                             </th>
-                                            {/* <th className="px-3 py-4 border-b-2 border-gray-20 text-center text-sm font-semibold text-white uppercase tracking-wider">
-                      Presentation
-                    </th>
-                    <th className="px-3 py-4 border-b-2 border-gray-20 text-center text-sm font-semibold text-white uppercase tracking-wider">
-                      Total
-                    </th> */}
                                         </tr>
                                     </thead>
 
@@ -125,16 +117,6 @@ const Table = ({ sem_no }) => {
                                                         {row.sem}
                                                     </p>
                                                 </td>
-                                                {/* <td className="px-5 py-5 border-b border-gray-200 border-2 text-sm text-center">
-                            <p className="text-gray-600 whitespace-no-wrap">
-                            {row.ap}
-                            </p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 border-2 text-sm text-center">
-                            <p className="text-gray-600 whitespace-no-wrap">
-                            {row.total}
-                            </p>
-                        </td> */}
                                             </Reorder.Item>
                                         ))}
                                     </tbody>
